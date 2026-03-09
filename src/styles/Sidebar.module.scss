@@ -1,0 +1,171 @@
+.sidebar {
+  height: 100%;
+  overflow-y: auto;
+  padding: 0.8rem 0.8rem 2rem;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 999px;
+    transition: background-color 0.2s ease;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: $bg-icon-btn-hover;
+  }
+
+  // ── Profile ──────────────────────────────────────────────
+  &__profile {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+
+    &:hover {
+      background-color: $bg-hover-light;
+    }
+
+    // Tablet — sirf avatar, naam hide
+    @media (max-width: 1100px) {
+      padding: 0.8rem;
+      justify-content: center;
+    }
+  }
+
+  &__avatar {
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    background-color: $bg-icon-btn;
+  }
+
+  &__name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $fb-text-primary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: 1100px) {
+      display: none;
+    }
+  }
+
+  // ── Menu ─────────────────────────────────────────────────
+  &__menu {
+    list-style: none;
+    margin-top: 0.4rem;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+
+    &:hover {
+      background-color: $bg-hover-light;
+    }
+
+    // Tablet — center karo, label hide
+    @media (max-width: 1100px) {
+      padding: 0.8rem;
+      justify-content: center;
+    }
+  }
+
+  &__icon {
+    width: 3.6rem;
+    height: 3.6rem;
+    background-color: $bg-icon-btn;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      font-size: 2rem;
+      color: $fb-text-primary;
+    }
+  }
+
+  &__label {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: $fb-text-primary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: 1100px) {
+      display: none;
+    }
+  }
+
+  // ── Divider ───────────────────────────────────────────────
+  &__divider {
+    height: 0.1rem;
+    background-color: $fb-border;
+    margin: 0.8rem 1.2rem;
+
+    @media (max-width: 1100px) {
+      margin: 0.8rem 0.4rem;
+    }
+  }
+
+  // ── Shortcuts — tablet pe hide ────────────────────────────
+  &__shortcuts {
+    padding: 0 0.4rem;
+
+    @media (max-width: 1100px) {
+      display: none;
+    }
+  }
+
+  &__shortcutsTitle {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: $fb-text-secondary;
+    padding: 0.4rem 0.8rem 0.8rem;
+  }
+
+  &__shortcutItem {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+
+    &:hover {
+      background-color: $bg-hover-light;
+    }
+  }
+
+  &__shortcutAvatar {
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: $border-radius;
+    background-color: $bg-icon-btn;
+    flex-shrink: 0;
+  }
+}

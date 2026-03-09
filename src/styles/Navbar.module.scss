@@ -1,0 +1,194 @@
+.navbar {
+  height: 5.6rem;
+  background-color: $fb-white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.6rem;
+  position: fixed;
+  width: 100vw;
+  z-index: 1000;
+  box-shadow: 0 0.2rem 0.4rem $shadow-color;
+  box-sizing: border-box;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 15rem;
+
+    .logo {
+      color: $fb-blue;
+      font-size: 4rem;
+      cursor: pointer;
+    }
+
+    .searchWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $bg-light-green;
+      padding: 0 1.2rem;
+      border-radius: 999px;
+      height: 4rem;
+      margin-left: 0.8rem;
+      max-width: 24rem;
+      width: 100%;
+
+      @media (max-width: 1100px) {
+        width: 4rem;
+        padding: 0;
+      }
+
+      svg {
+        font-size: 2.2rem;
+        flex-shrink: 0;
+        color: $text-primary;
+      }
+
+      input {
+        margin-left: 0.8rem;
+        font-size: 1.5rem;
+        width: 100%;
+
+        @media (max-width: 1100px) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &__center {
+    display: flex;
+    justify-content: center;
+    flex: 1.5;
+    height: 100%;
+    max-width: 60rem;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      height: 5.6rem;
+      cursor: pointer;
+      color: $text-secondary;
+      border-bottom: 0.3rem solid transparent;
+      transition: all 0.1s ease-in-out;
+      position: relative;
+
+      // hover background
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0.6rem 0.4rem;
+        border-radius: 0.8rem;
+        background-color: transparent;
+        transition: background-color 0.1s ease-in-out;
+        z-index: 0;
+      }
+
+      &:hover::before {
+        background-color: $bg-hover-light;
+      }
+
+      svg {
+        font-size: 2.8rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      // ── Tooltip ───────────────────────────────────────────
+      &[data-tooltip]::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: -3rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.75);
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: 500;
+        padding: 0.4rem 0.8rem;
+        border-radius: 0.6rem;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.15s ease;
+        z-index: 100;
+      }
+
+      &[data-tooltip]:hover::after {
+        opacity: 1;
+      }
+    }
+
+    .active {
+      color: $fb-blue;
+      border-bottom: 0.3rem solid $fb-blue;
+
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+    gap: 0.8rem;
+    min-width: 15rem;
+
+    .iconBtn {
+      background-color: $bg-icon-btn;
+      height: 4rem;
+      width: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative; // tooltip ke liye
+
+      &:hover {
+        background-color: $bg-icon-btn-hover;
+      }
+
+      svg {
+        font-size: 2.2rem;
+        color: $text-primary;
+      }
+
+      // ── Tooltip ───────────────────────────────────────────
+      &[data-tooltip]::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: -3.2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.75);
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: 500;
+        padding: 0.4rem 0.8rem;
+        border-radius: 0.6rem;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.15s ease;
+        z-index: 100;
+      }
+
+      &[data-tooltip]:hover::after {
+        opacity: 1;
+      }
+    }
+  }
+}

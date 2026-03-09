@@ -1,0 +1,58 @@
+import styles from '../styles/Navbar.module.scss';
+import { FaFacebook, FaSearch } from 'react-icons/fa';
+import { FaFacebookMessenger } from 'react-icons/fa6';
+import { HiHome, HiUserGroup } from 'react-icons/hi';
+import { RiVideoFill, RiStore2Fill } from 'react-icons/ri';
+import { IoNotifications, IoAppsSharp } from 'react-icons/io5';
+import { IoMdArrowDropdown } from 'react-icons/io';
+
+const Navbar = () => {
+    return (
+        <nav className={styles.navbar}>
+
+            {/* ── Left ── */}
+            <div className={styles['navbar__left']}>
+                <FaFacebook className={styles.logo} />
+                <div className={styles.searchWrapper}>
+                    <FaSearch color="#65676B" />
+                    <input type="text" placeholder="Search Facebook" />
+                </div>
+            </div>
+
+            {/* ── Center ── */}
+            <div className={styles['navbar__center']}>
+                <div className={`${styles.option} ${styles.active}`} data-tooltip="Home">
+                    <HiHome />
+                </div>
+                <div className={styles.option} data-tooltip="Friends">
+                    <HiUserGroup />
+                </div>
+                <div className={styles.option} data-tooltip="Watch">
+                    <RiVideoFill />
+                </div>
+                <div className={styles.option} data-tooltip="Marketplace">
+                    <RiStore2Fill />
+                </div>
+            </div>
+
+            {/* ── Right ── */}
+            <div className={styles['navbar__right']}>
+                <div className={styles.iconBtn} data-tooltip="Menu">
+                    <IoAppsSharp />
+                </div>
+                <div className={styles.iconBtn} data-tooltip="Messenger">
+                    <FaFacebookMessenger />
+                </div>
+                <div className={styles.iconBtn} data-tooltip="Notifications">
+                    <IoNotifications />
+                </div>
+                <div className={styles.iconBtn} data-tooltip="Account">
+                    <IoMdArrowDropdown />
+                </div>
+            </div>
+
+        </nav>
+    );
+};
+
+export default Navbar;

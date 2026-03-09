@@ -1,0 +1,460 @@
+// ── Feed ──────────────────────────────────────────────────────────────────────
+.feed {
+    width: 59rem;
+    min-width: 0;
+    padding: 2rem 0 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+
+    @media (max-width: 1100px) {
+        width: 100%; // rightbar hide hone par full width
+        max-width: 59rem;
+    }
+
+    @media (max-width: 768px) {
+        width: 100%;
+        padding: 1.2rem 0 4rem;
+    }
+}
+
+// ── Stories Wrapper ───────────────────────────────────────────────────────────
+.stories-wrap {
+    position: relative;
+}
+
+// ── Stories ───────────────────────────────────────────────────────────────────
+.stories {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    padding-bottom: 0.4rem;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &__item {
+        flex-shrink: 0;
+        width: 11rem;
+        height: 19rem;
+        border-radius: 1.2rem;
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        transition: filter 0.15s;
+
+        &:hover {
+            filter: brightness(0.93);
+        }
+
+        @media (max-width: 480px) {
+            width: 9rem;
+            height: 16rem;
+        }
+    }
+
+    &__bg {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
+        }
+    }
+
+    &__avatar {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        width: 3.8rem;
+        height: 3.8rem;
+        border-radius: 50%;
+        border: 3px solid $fb-blue;
+        object-fit: cover;
+        z-index: 2;
+    }
+
+    &__add-btn {
+        position: absolute;
+        bottom: 3.6rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 3.4rem;
+        height: 3.4rem;
+        background: $fb-blue;
+        border-radius: 50%;
+        border: 3px solid $fb-white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $fb-white;
+        z-index: 2;
+    }
+
+    &__arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 50%;
+        border: none;
+        background: $fb-white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: $fb-text-primary;
+        transition: background 0.15s;
+
+        &:hover {
+            background: $bg-hover-light;
+        }
+
+        &--left {
+            left: 2rem;
+        }
+
+        &--right {
+            right: 2rem;
+        }
+
+    }
+
+    &__name {
+        position: absolute;
+        bottom: 1rem;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: $fb-white;
+        z-index: 2;
+        padding: 0 0.6rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+// ── Create Post ───────────────────────────────────────────────────────────────
+.create-post {
+    background: $fb-white;
+    border-radius: $border-radius;
+    padding: 1.2rem 1.6rem;
+    box-shadow: $shadow;
+    border: 1px solid $fb-border;
+
+    &__top {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    &__avatar {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+
+    &__input {
+        flex: 1;
+        background: $fb-bg;
+        border-radius: 999px;
+        padding: 0.9rem 1.6rem;
+        font-size: 1.5rem;
+        color: $fb-text-secondary;
+        cursor: pointer;
+        transition: background 0.15s;
+        -webkit-user-select: none;
+        user-select: none;
+
+        &:hover {
+            background: $bg-icon-btn;
+        }
+    }
+
+    &__divider {
+        height: 1px;
+        background: $fb-border;
+        margin: 1.1rem 0;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        background: transparent;
+        border: none;
+        padding: 0.7rem 0.4rem;
+        border-radius: $border-radius;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: $fb-text-secondary;
+        cursor: pointer;
+        transition: background 0.15s;
+        white-space: nowrap;
+
+        &:hover {
+            background: $bg-hover-light;
+        }
+
+        // Mobile — sirf icon dikhao
+        @media (max-width: 480px) {
+            span {
+                display: none;
+            }
+
+            font-size: 2rem;
+        }
+    }
+}
+
+// ── Post ──────────────────────────────────────────────────────────────────────
+.post {
+    background: $fb-white;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    border: 1px solid $fb-border;
+    overflow: visible;
+
+    @media (max-width: 768px) {
+        border-radius: 0; // mobile pe full width card
+        border-left: none;
+        border-right: none;
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        padding: 1.2rem 1.6rem 0;
+        gap: 0.8rem;
+    }
+
+    &__avatar {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+
+    &__meta {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+    }
+
+    &__name {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $fb-text-primary;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &__info {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    &__time {
+        font-size: 1.2rem;
+        color: $fb-text-secondary;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &__dot {
+        font-size: 1rem;
+        color: $fb-text-secondary;
+    }
+
+    &__privacy {
+        display: flex;
+        align-items: center;
+        color: $fb-text-secondary;
+        font-size: 1.3rem;
+    }
+
+    &__menu {
+        background: transparent;
+        border: none;
+        color: $fb-text-secondary;
+        cursor: pointer;
+        width: 3.6rem;
+        height: 3.6rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.15s;
+        flex-shrink: 0;
+
+        &:hover {
+            background: $bg-hover-light;
+        }
+    }
+
+    &__body {
+        padding: 0.8rem 1.6rem 1rem;
+    }
+
+    &__text {
+        font-size: 1.5rem;
+        line-height: 1.6;
+        color: $fb-text-primary;
+        white-space: pre-wrap;
+    }
+
+    &__image {
+        display: block;
+        width: 100%;
+        max-height: 55rem;
+        object-fit: cover;
+        border-top: 1px solid $fb-border;
+        border-bottom: 1px solid $fb-border;
+    }
+
+    &__stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.6rem 1.6rem;
+        font-size: 1.4rem;
+        color: $fb-text-secondary;
+        min-height: 3.6rem;
+    }
+
+    &__reactions {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        cursor: pointer;
+
+        &:hover span {
+            text-decoration: underline;
+        }
+    }
+
+    &__reaction-icons {
+        display: flex;
+        align-items: center;
+    }
+
+    &__reaction-icon {
+        width: 1.8rem;
+        height: 1.8rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        margin-left: -0.3rem;
+        border: 1.5px solid $fb-white;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+
+    &__reaction-count {
+        font-size: 1.4rem;
+        color: $fb-text-secondary;
+    }
+
+    &__engagement {
+        display: flex;
+        gap: 1rem;
+
+        span {
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &__divider {
+        height: 1px;
+        background: $fb-border;
+        margin: 0 1.6rem;
+    }
+
+    &__actions {
+        display: flex;
+        padding: 0.4rem 0.8rem;
+    }
+
+    &__action {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        background: transparent;
+        border: none;
+        padding: 0.8rem;
+        border-radius: $border-radius;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $fb-text-secondary;
+        cursor: pointer;
+        transition: background 0.15s;
+
+        &:hover {
+            background: $bg-hover-light;
+        }
+
+        &--liked {
+            color: $fb-blue;
+        }
+
+        // Mobile — text hide karo
+        @media (max-width: 480px) {
+            span:last-child {
+                display: none;
+            }
+        }
+    }
+
+    &__action-icon {
+        display: flex;
+        align-items: center;
+    }
+}

@@ -1,0 +1,199 @@
+.rightbar {
+  width: 100%;
+  height: 100%;
+  padding: 1.6rem 0.8rem 2rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+// ── Heading ───────────────────────────────────────────────
+.rightbar__heading {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: $fb-text-secondary;
+  padding: 0 0.8rem;
+  margin-bottom: 0.8rem;
+
+  @media (max-width: 1300px) {
+    font-size: 1.5rem;
+  }
+}
+
+// ── Divider ───────────────────────────────────────────────
+.rightbar__divider {
+  border: none;
+  border-top: 1px solid $fb-border;
+  margin: 1.6rem 0.8rem;
+}
+
+// ── Sponsored ─────────────────────────────────────────────
+.rightbar__sponsored {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.rightbar__ad {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.2rem;
+  padding: 0.8rem;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: background 0.15s;
+  &:hover { background: $bg-hover-light; }
+
+  // Small desktop — gap kam karo
+  @media (max-width: 1300px) {
+    gap: 0.8rem;
+    padding: 0.6rem;
+  }
+}
+
+.rightbar__ad-img {
+  width: 8rem;
+  height: 8rem;
+  border-radius: $border-radius;
+  object-fit: cover;
+  flex-shrink: 0;
+
+  @media (max-width: 1300px) {
+    width: 6.4rem;
+    height: 6.4rem;
+  }
+}
+
+.rightbar__ad-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  overflow: hidden;
+  min-width: 0;           // text overflow fix
+}
+
+.rightbar__ad-brand {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: $fb-text-primary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (max-width: 1300px) {
+    font-size: 1.3rem;
+  }
+}
+
+.rightbar__ad-tagline {
+  font-size: 1.2rem;
+  color: $fb-text-secondary;
+}
+
+.rightbar__ad-desc {
+  font-size: 1.3rem;
+  color: $fb-text-secondary;
+  line-height: 1.4;
+  overflow: hidden;
+  max-height: 4rem;
+
+  @media (max-width: 1300px) {
+    font-size: 1.2rem;
+  }
+}
+
+// ── Contacts Top ──────────────────────────────────────────
+.rightbar__contacts-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.rightbar__contacts-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.rightbar__icon-btn {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: $fb-text-secondary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+  &:hover { background: $bg-hover-light; }
+}
+
+// ── Contact List ──────────────────────────────────────────
+.rightbar__contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.rightbar__contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: background 0.15s;
+  &:hover { background: $bg-hover-light; }
+
+  @media (max-width: 1300px) {
+    gap: 0.8rem;
+    padding: 0.5rem 0.6rem;
+  }
+}
+
+.rightbar__contact-img-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 3.6rem;
+  height: 3.6rem;
+}
+
+.rightbar__contact-img {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.rightbar__dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  background-color: #31a24c;
+  border-radius: 50%;
+  border: 2px solid $fb-bg;
+}
+
+.rightbar__contact-name {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: $fb-text-primary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+
+  @media (max-width: 1300px) {
+    font-size: 1.4rem;
+  }
+}
