@@ -1,0 +1,396 @@
+.saved {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative; // toggle button ke liye
+}
+
+// ── Left Panel ────────────────────────────────────────────
+.saved__panel {
+  width: 36rem;
+  flex-shrink: 0;
+  border-right: 1px solid $fb-border;
+  padding: 1.6rem 0.8rem;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  transition: width 0.25s ease;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // ── Manual Collapsed ──
+  &--collapsed {
+    width: 7.2rem;
+
+    .saved__panel-title {
+      display: none;
+    }
+
+    .saved__panel-icon-btn {
+      display: none;
+    }
+
+    .saved__search {
+      display: none;
+    }
+
+    .saved__nav-label {
+      display: none;
+    }
+
+    .saved__nav-count {
+      display: none;
+    }
+
+    .saved__nav-item {
+      justify-content: center;
+      padding: 0.8rem;
+    }
+
+    .saved__panel-top {
+      justify-content: center;
+      padding: 0 0.4rem 1.2rem;
+    }
+  }
+
+  // ── Responsive — choti screen par auto collapse ──
+  @media (max-width: 1100px) {
+    width: 7.2rem;
+
+    .saved__panel-title {
+      display: none;
+    }
+
+    .saved__panel-icon-btn {
+      display: none;
+    }
+
+    .saved__search {
+      display: none;
+    }
+
+    .saved__nav-label {
+      display: none;
+    }
+
+    .saved__nav-count {
+      display: none;
+    }
+
+    .saved__nav-item {
+      justify-content: center;
+      padding: 0.8rem;
+    }
+
+    .saved__panel-top {
+      justify-content: center;
+      padding: 0 0.4rem 1.2rem;
+    }
+  }
+}
+
+// ── Toggle Button — bilkul border par ─────────────────────
+.saved__toggle {
+  position: absolute;
+  top: 3rem;
+  left: calc(36rem - 1.8rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  border: 1px solid $fb-border;
+  background: $fb-white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  color: $fb-text-secondary;
+  cursor: pointer;
+  z-index: 20;
+  transition: left 0.25s ease, background 0.15s, color 0.15s;
+
+  &:hover {
+    background: $bg-icon-btn-hover;
+    color: $fb-text-primary;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  }
+
+  &--collapsed {
+    left: calc(7.2rem - 1.8rem);
+  }
+
+  @media (max-width: 1100px) {
+    display: none;
+  }
+}
+
+.saved__panel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.8rem 1.2rem;
+  transition: justify-content 0.25s, padding 0.25s;
+}
+
+.saved__panel-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: $fb-text-primary;
+  white-space: nowrap;
+}
+
+.saved__panel-icon-btn {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  border: none;
+  background: $bg-icon-btn;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $fb-text-primary;
+
+  &:hover {
+    background: $bg-icon-btn-hover;
+  }
+}
+
+.saved__search {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: $bg-icon-btn;
+  border-radius: 999px;
+  padding: 0.8rem 1.4rem;
+  margin: 0 0.4rem 1.2rem;
+
+  input {
+    font-size: 1.5rem;
+    width: 100%;
+    color: $fb-text-primary;
+
+    &::placeholder {
+      color: $fb-text-secondary;
+    }
+  }
+}
+
+.saved__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.saved__nav-item {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: $border-radius;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: $fb-text-primary;
+  transition: background 0.15s, padding 0.25s;
+
+  &:hover {
+    background: #e4e6eb;
+  }
+
+  &--active {
+    background: #e7f3ff;
+    color: $fb-blue;
+
+    .saved__nav-icon {
+      background: #cce0ff;
+      color: $fb-blue;
+    }
+
+    .saved__nav-label {
+      color: $fb-blue;
+      font-weight: 600;
+    }
+  }
+}
+
+.saved__nav-icon {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  background: $bg-icon-btn;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: $fb-text-primary;
+}
+
+.saved__nav-label {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.saved__nav-count {
+  font-size: 1.3rem;
+  color: $fb-text-secondary;
+  white-space: nowrap;
+}
+
+// ── Right Content ─────────────────────────────────────────
+.saved__content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem 2.4rem;
+  overflow-y: auto;
+}
+
+.saved__content-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.6rem;
+}
+
+.saved__section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: $fb-text-primary;
+}
+
+// ── Grid — toggle par 1 box zyada, responsive breakpoints ─
+.saved__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+
+  &--wide {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media (max-width: 1400px) {
+    grid-template-columns: repeat(3, 1fr);
+
+
+    &--wide {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (max-width: 1100px) {
+    grid-template-columns: repeat(3, 1fr);
+
+    &--wide {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+
+    &--wide {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+
+    &--wide {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// ── Card ──────────────────────────────────────────────────
+.saved__card {
+  background: $fb-white;
+  border-radius: $border-radius;
+  border: 1px solid $fb-border;
+  overflow: hidden;
+  box-shadow: $shadow;
+  cursor: pointer;
+  position: relative;
+  transition: box-shadow 0.15s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.saved__card-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  display: block;
+}
+
+.saved__card-body {
+  padding: 0.8rem 1rem 3.2rem;
+}
+
+.saved__card-type {
+  font-size: 1.2rem;
+  color: $fb-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.saved__card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: $fb-text-primary;
+  margin: 0.3rem 0;
+  overflow: hidden;
+  max-height: 4rem;
+}
+
+.saved__card-page {
+  font-size: 1.3rem;
+  color: $fb-text-secondary;
+}
+
+.saved__card-time {
+  font-size: 1.2rem;
+  color: $fb-text-secondary;
+  margin-top: 0.2rem;
+}
+
+.saved__card-more {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $fb-text-primary;
+
+  &:hover {
+    background: $fb-white;
+  }
+}
+
+.saved__home-btn {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.8rem 1.2rem;
+  margin-top: auto;
+  border-top: 1px solid $fb-border;
+  padding-top: 1.2rem;
+  cursor: pointer;
+  border-radius: $border-radius;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: $fb-text-primary;
+
+  &:hover {
+    background: #e4e6eb;
+  }
+}

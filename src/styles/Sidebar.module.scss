@@ -1,28 +1,100 @@
+@mixin collapsed-state {
+  .sidebar__name           { display: none; }
+  .sidebar__label          { display: none; }
+  .sidebar__shortcutsTitle { display: none; }
+  .sidebar__divider        { margin: 0.8rem 0.4rem; }
+  .sidebar__profile        { padding: 0.8rem; justify-content: center; }
+  .sidebar__item           { padding: 0.8rem; justify-content: center; }
+  .sidebar__shortcutItem   { padding: 0.8rem; justify-content: center; }
+}
+
+.sidebar-wrapper {
+  position: relative;
+  height: 100%;
+  display: flex;
+}
+
+.sidebar__toggle {
+  position: fixed;
+  top: calc(5.6rem + 3rem);
+  left: calc(#{$sidebar-width} - 1.8rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  border: 1px solid $fb-border;
+  background: $fb-white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  color: $fb-text-secondary;
+  cursor: pointer;
+  z-index: 20;
+  transition: left 0.25s ease, background 0.15s, color 0.15s;
+
+  &:hover {
+    background: $bg-icon-btn-hover;
+    color: $fb-text-primary;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  }
+
+  &--collapsed {
+    left: calc(72px - 1.8rem);
+  }
+
+  @media (max-width: 1192px) { display: none; }
+}
+
 .sidebar {
   height: 100%;
+  width: $sidebar-width;
+  min-width: $sidebar-width;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 0.8rem 0.8rem 2rem;
-  -ms-overflow-style: none;
+  transition: width 0.25s ease, min-width 0.25s ease;
+  border-right: 1px solid $fb-border;
 
-  &::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
   &::-webkit-scrollbar-thumb {
-    background-color: transparent;
-    border-radius: 999px;
-    transition: background-color 0.2s ease;
-  }
-
-  &:hover::-webkit-scrollbar-thumb {
     background-color: $bg-icon-btn-hover;
+    border-radius: 999px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: darken($bg-icon-btn-hover, 10%);
   }
 
-  // ── Profile ──────────────────────────────────────────────
+  &--collapsed {
+    width: 72px;
+    min-width: 72px;
+    @include collapsed-state;
+  }
+
+  @media (max-width: 1192px) {
+    width: 72px !important;
+    min-width: 72px !important;
+    @include collapsed-state;
+  }
+
+  @media (max-width: 768px) {
+    width: 60px !important;
+    min-width: 60px !important;
+    @include collapsed-state;
+    .sidebar__profile      { padding: 0.6rem; }
+    .sidebar__item         { padding: 0.6rem; }
+    .sidebar__shortcutItem { padding: 0.6rem; }
+  }
+
+  @media (max-width: 480px) {
+    width: 52px !important;
+    min-width: 52px !important;
+    @include collapsed-state;
+    .sidebar__profile      { padding: 0.4rem; }
+    .sidebar__item         { padding: 0.4rem; }
+    .sidebar__shortcutItem { padding: 0.4rem; }
+  }
+
   &__profile {
     display: flex;
     align-items: center;
@@ -30,17 +102,9 @@
     padding: 0.8rem 1.2rem;
     border-radius: $border-radius;
     cursor: pointer;
-    transition: background-color 0.1s ease-in-out;
+    transition: background-color 0.1s ease-in-out, padding 0.25s;
 
-    &:hover {
-      background-color: $bg-hover-light;
-    }
-
-    // Tablet — sirf avatar, naam hide
-    @media (max-width: 1100px) {
-      padding: 0.8rem;
-      justify-content: center;
-    }
+    &:hover { background-color: $bg-icon-btn; }
   }
 
   &__avatar {
@@ -59,13 +123,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
-    @media (max-width: 1100px) {
-      display: none;
-    }
   }
 
-  // ── Menu ─────────────────────────────────────────────────
   &__menu {
     list-style: none;
     margin-top: 0.4rem;
@@ -78,17 +137,10 @@
     padding: 0.8rem 1.2rem;
     border-radius: $border-radius;
     cursor: pointer;
-    transition: background-color 0.1s ease-in-out;
+    transition: background-color 0.1s ease-in-out, padding 0.25s;
 
-    &:hover {
-      background-color: $bg-hover-light;
-    }
-
-    // Tablet — center karo, label hide
-    @media (max-width: 1100px) {
-      padding: 0.8rem;
-      justify-content: center;
-    }
+    &:hover    { background-color: $bg-icon-btn; }
+    &--active  { background-color: #e7f3ff; }
   }
 
   &__icon {
@@ -101,9 +153,11 @@
     justify-content: center;
     flex-shrink: 0;
 
-    svg {
-      font-size: 2rem;
-      color: $fb-text-primary;
+    svg { font-size: 2rem; color: $fb-text-primary; }
+
+    &--active {
+      background-color: #cce0ff;
+      svg { color: $fb-blue; }
     }
   }
 
@@ -115,30 +169,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
 
-    @media (max-width: 1100px) {
-      display: none;
-    }
+    &--active { color: $fb-blue; font-weight: 600; }
   }
 
-  // ── Divider ───────────────────────────────────────────────
   &__divider {
-    height: 0.1rem;
+    height: 1px;
     background-color: $fb-border;
     margin: 0.8rem 1.2rem;
-
-    @media (max-width: 1100px) {
-      margin: 0.8rem 0.4rem;
-    }
+    transition: margin 0.25s;
   }
 
-  // ── Shortcuts — tablet pe hide ────────────────────────────
-  &__shortcuts {
-    padding: 0 0.4rem;
-
-    @media (max-width: 1100px) {
-      display: none;
-    }
-  }
+  &__shortcuts { padding: 0 0.4rem; }
 
   &__shortcutsTitle {
     font-size: 1.7rem;
@@ -154,10 +195,13 @@
     padding: 0.8rem 1.2rem;
     border-radius: $border-radius;
     cursor: pointer;
-    transition: background-color 0.1s ease-in-out;
+    transition: background-color 0.1s ease-in-out, padding 0.25s;
 
-    &:hover {
-      background-color: $bg-hover-light;
+    &:hover { background-color: $bg-icon-btn; }
+
+    &--collapsed {
+      padding: 0.8rem;
+      justify-content: center;
     }
   }
 
@@ -167,5 +211,10 @@
     border-radius: $border-radius;
     background-color: $bg-icon-btn;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg { font-size: 1.8rem; color: $fb-text-primary; }
   }
 }

@@ -1,7 +1,10 @@
-// ─── Colors ──────────────────────────────────────────────────────────────────
+// ─── Colors ───────────────────────────────────────────────────────────────────
 
 // Facebook Brand
 $fb-blue: #1877f2;
+$fb-blue-hover: #166fe5;
+$fb-blue-light: #e7f3ff;
+$fb-blue-hover-bg: #cce0ff;
 $fb-bg: #f0f2f5;
 $fb-white: #ffffff;
 $fb-border: #ced0d4;
@@ -9,20 +12,73 @@ $fb-border: #ced0d4;
 // Text
 $fb-text-primary: #050505;
 $fb-text-secondary: #65676b;
-$text-primary: #050505;
-$text-secondary: #65676b;
+$text-primary: $fb-text-primary;
+$text-secondary: $fb-text-secondary;
 
 // Backgrounds
-$bg-light-green: #f1f5f0;
-$bg-hover-light: #f2f2f2;
 $bg-icon-btn: #e4e6eb;
 $bg-icon-btn-hover: #d8dadf;
+$bg-hover-light: #f2f2f2;
+$bg-light-green: #f1f5f0;
+
+// Status / Action colors
+$color-live: #f3425f;
+$color-photo: #45bd62;
+$color-feeling: #f7b928;
+$color-badge-red: #e41e3f;
+$color-online-dot: #31a24c;
 
 // Shadows
 $shadow-color: rgba(0, 0, 0, 0.1);
 $shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 2px 8px rgba(0, 0, 0, 0.12);
+$shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.18);
 
-// ─── Sizes ───────────────────────────────────────────────────────────────────
+// ─── Sizes ────────────────────────────────────────────────────────────────────
+
+// Layout
 $nav-height: 56px;
 $sidebar-width: 300px;
+$panel-width: 36rem;
+$panel-collapsed-width: 7.2rem;
+
+// Border radius
 $border-radius: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-full: 999px;
+
+// Icon sizes
+$icon-xs: 12px;
+$icon-sm: 16px;
+$icon-md: 18px;
+$icon-base: 20px;
+$icon-lg: 22px;
+$icon-xl: 24px;
+$icon-2xl: 64px;
+
+// Avatar sizes
+$avatar-sm: 3.2rem;
+$avatar-md: 3.6rem;
+$avatar-lg: 4rem;
+$avatar-xl: 4.4rem;
+
+// ─── Transitions ──────────────────────────────────────────────────────────────
+
+$transition-fast: 0.1s ease;
+$transition-base: 0.15s ease;
+$transition-slow: 0.25s ease;
+
+// ─── Z-index ──────────────────────────────────────────────────────────────────
+
+$z-stories: 2;
+$z-dropdown: 10;
+$z-toggle: 20;
+$z-navbar: 100;
+$z-modal: 1000;
+
+// ─── Breakpoints (reference only) ─────────────────────────────────────────────
+// $bp-sm:   480px
+// $bp-md:   768px
+// $bp-lg:   1192px
+// $bp-xl:   1300px

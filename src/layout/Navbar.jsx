@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import styles from '../styles/Navbar.module.scss';
 import { FaFacebook, FaSearch } from 'react-icons/fa';
 import { FaFacebookMessenger } from 'react-icons/fa6';
@@ -21,18 +22,46 @@ const Navbar = () => {
 
             {/* ── Center ── */}
             <div className={styles['navbar__center']}>
-                <div className={`${styles.option} ${styles.active}`} data-tooltip="Home">
+                <NavLink
+                    to="/"
+                    end
+                    className={({ isActive }) =>
+                        isActive ? `${styles.option} ${styles.active}` : styles.option
+                    }
+                    data-tooltip="Home"
+                >
                     <HiHome />
-                </div>
-                <div className={styles.option} data-tooltip="Friends">
+                </NavLink>
+
+                <NavLink
+                    to="/friends"
+                    className={({ isActive }) =>
+                        isActive ? `${styles.option} ${styles.active}` : styles.option
+                    }
+                    data-tooltip="Friends"
+                >
                     <HiUserGroup />
-                </div>
-                <div className={styles.option} data-tooltip="Watch">
+                </NavLink>
+
+                <NavLink
+                    to="/watch"
+                    className={({ isActive }) =>
+                        isActive ? `${styles.option} ${styles.active}` : styles.option
+                    }
+                    data-tooltip="Watch"
+                >
                     <RiVideoFill />
-                </div>
-                <div className={styles.option} data-tooltip="Marketplace">
+                </NavLink>
+
+                <NavLink
+                    to="/marketplace"
+                    className={({ isActive }) =>
+                        isActive ? `${styles.option} ${styles.active}` : styles.option
+                    }
+                    data-tooltip="Marketplace"
+                >
                     <RiStore2Fill />
-                </div>
+                </NavLink>
             </div>
 
             {/* ── Right ── */}

@@ -1,0 +1,399 @@
+.market {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+// ── Left Panel ────────────────────────────────────────────
+.market__panel {
+  width: 36rem;
+  flex-shrink: 0;
+  height: 100%;
+  border-right: 1px solid $fb-border;
+  padding: 1.6rem 0.8rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &--collapsed {
+    width: 7.2rem;
+
+    .market__panel-title {
+      display: none;
+    }
+
+    .market__panel-top {
+      justify-content: center;
+      padding: 0 0.4rem 1.2rem;
+    }
+
+    .market__panel-icon-btn {
+      margin: 0 auto;
+    }
+
+    .market__create-btn {
+      padding: 0.8rem;
+      justify-content: center;
+    }
+
+    .market__create-label {
+      display: none;
+    }
+
+    .market__nav-title {
+      display: none;
+    }
+
+    .market__nav-label {
+      display: none;
+    }
+
+    .market__nav-item {
+      justify-content: center;
+      padding: 0.8rem;
+    }
+
+    .market__home-btn {
+      justify-content: center;
+      padding: 0.8rem;
+    }
+
+    .market__home-label {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    width: 7.2rem;
+
+    .market__panel-title {
+      display: none;
+    }
+
+    .market__panel-top {
+      justify-content: center;
+      padding: 0 0.4rem 1.2rem;
+    }
+
+    .market__panel-icon-btn {
+      margin: 0 auto;
+    }
+
+    .market__create-btn {
+      padding: 0.8rem;
+      justify-content: center;
+    }
+
+    .market__create-label {
+      display: none;
+    }
+
+    .market__nav-title {
+      display: none;
+    }
+
+    .market__nav-label {
+      display: none;
+    }
+
+    .market__nav-item {
+      justify-content: center;
+      padding: 0.8rem;
+    }
+
+    .market__home-btn {
+      justify-content: center;
+      padding: 0.8rem;
+    }
+
+    .market__home-label {
+      display: none;
+    }
+  }
+}
+
+// ── Toggle Button ─────────────────────────────────────────
+.market__toggle {
+  position: absolute;
+  top: 3rem;
+  left: calc(36rem - 1.8rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  border: 1px solid $fb-border;
+  background: $fb-white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  color: $fb-text-secondary;
+  cursor: pointer;
+  z-index: 20;
+  transition: left 0.25s ease, background 0.15s, color 0.15s;
+
+  &:hover {
+    background: $bg-icon-btn-hover;
+    color: $fb-text-primary;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  }
+
+  &--collapsed {
+    left: calc(7.2rem - 1.8rem);
+  }
+
+  @media (max-width: 1100px) {
+    display: none;
+  }
+}
+
+// ── Panel Top ─────────────────────────────────────────────
+.market__panel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.8rem 1.2rem;
+  transition: padding 0.25s;
+}
+
+.market__panel-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: $fb-text-primary;
+  white-space: nowrap;
+}
+
+.market__panel-icon-btn {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  border: none;
+  background: $bg-icon-btn;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $fb-text-primary;
+  flex-shrink: 0;
+
+  &:hover {
+    background: $bg-icon-btn-hover;
+  }
+}
+
+// ── Create Button ─────────────────────────────────────────
+.market__create-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: #e7f3ff;
+  color: $fb-blue;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: $border-radius;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 1.2rem;
+  transition: background 0.15s, padding 0.25s;
+
+  &:hover {
+    background: #cce0ff;
+  }
+}
+
+.market__create-label {
+  white-space: nowrap;
+}
+
+// ── Nav ───────────────────────────────────────────────────
+.market__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.market__nav-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: $fb-text-primary;
+  padding: 0.4rem 1.2rem 0.8rem;
+  white-space: nowrap;
+}
+
+.market__nav-item {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: $border-radius;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: $fb-text-primary;
+  transition: background 0.15s, padding 0.25s;
+
+  &:hover {
+    background: #e4e6eb;
+  }
+
+  &--active {
+    background: #e7f3ff;
+    color: $fb-blue;
+
+    .market__nav-icon {
+      background: #cce0ff;
+      color: $fb-blue;
+    }
+  }
+}
+
+.market__nav-icon {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  background: $bg-icon-btn;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: $fb-text-primary;
+}
+
+.market__nav-label {
+  flex: 1;
+  white-space: nowrap;
+}
+
+// ── Home Button ───────────────────────────────────────────
+.market__home-btn {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: $border-radius;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: $fb-text-primary;
+  border-top: 1px solid $fb-border;
+  padding-top: 1.2rem;
+  margin-top: 1rem;
+
+  &:hover {
+    background: #e4e6eb;
+    color: $fb-blue;
+
+    .market__nav-icon {
+      background: #cce0ff;
+      color: $fb-blue;
+    }
+  }
+}
+
+.market__home-label {
+  white-space: nowrap;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+// ── Right Content ─────────────────────────────────────────
+.market__content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem 2.4rem;
+  overflow-y: auto;
+}
+
+.market__section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: $fb-text-primary;
+  margin-bottom: 1.6rem;
+}
+
+// ── Grid ──────────────────────────────────────────────────
+.market__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+
+  &--wide {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media (max-width: 1400px) {
+    grid-template-columns: repeat(3, 1fr);
+
+    &--wide {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (max-width: 1100px) {
+    grid-template-columns: repeat(3, 1fr);
+
+    &--wide {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// ── Card ──────────────────────────────────────────────────
+.market__card {
+  background: $fb-white;
+  border-radius: $border-radius;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+  border: 1px solid $fb-border;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.market__card-img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  display: block;
+}
+
+.market__card-info {
+  padding: 0.8rem 1rem 1rem;
+}
+
+.market__card-price {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: $fb-text-primary;
+  margin-bottom: 0.2rem;
+}
+
+.market__card-title {
+  font-size: 1.4rem;
+  color: $fb-text-secondary;
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.market__card-location {
+  font-size: 1.3rem;
+  color: $fb-text-secondary;
+}

@@ -4,34 +4,33 @@ import {
   MdFlag, MdPlayCircle, MdHome, MdVolunteerActivism,
   MdGroups, MdWorkHistory, MdCalendarMonth, MdOutlineExplore,
 } from "react-icons/md";
+import { FaReact, FaLayerGroup, FaCode, FaNodeJs } from "react-icons/fa";
 
-// Hamesha dikhne wale items
 export const menuItemsMain = [
-  { icon: <MdGroup />, label: "Friends" },
-  { icon: <MdStorefront />, label: "Marketplace" },
-  { icon: <MdOndemandVideo />, label: "Watch" },
-  { icon: <MdBookmark />, label: "Saved" },
-  { icon: <MdEvent />, label: "Events" },
+  { icon: <MdGroup />,         label: "Friends",     route: "/friends"     },
+  { icon: <MdStorefront />,    label: "Marketplace", route: "/marketplace" },
+  { icon: <MdOndemandVideo />, label: "Watch",       route: "/watch"       },
+  { icon: <MdBookmark />,      label: "Saved",       route: "/saved"       },
+  { icon: <MdEvent />,         label: "Events",      route: "/events"      },
 ];
 
-// See more click karne par dikhne wale items
 export const menuItemsExtra = [
-  { icon: <MdSportsEsports />, label: "Gaming" },
-  { icon: <MdMemory />, label: "Memories" },
-  { icon: <MdPeople />, label: "Groups" },
-  { icon: <MdFlag />, label: "Pages" },
-  { icon: <MdPlayCircle />, label: "Videos" },
-  { icon: <MdHome />, label: "Feeds" },
-  { icon: <MdVolunteerActivism />, label: "Fundraisers" },
-  { icon: <MdGroups />, label: "Community" },
-  { icon: <MdWorkHistory />, label: "Jobs" },
-  { icon: <MdCalendarMonth />, label: "Birthdays" },
-  { icon: <MdOutlineExplore />, label: "Explore" },
+  { icon: <MdSportsEsports />,    label: "Gaming",      route: "/gaming"      },
+  { icon: <MdMemory />,           label: "Memories",    route: "/memories"    },
+  { icon: <MdPeople />,           label: "Groups",      route: "/groups"      },
+  { icon: <MdFlag />,             label: "Pages",       route: "/pages"       },
+  { icon: <MdPlayCircle />,       label: "Videos",      route: "/videos"      },
+  { icon: <MdHome />,             label: "Feeds",       route: "/feeds"       },
+  { icon: <MdVolunteerActivism />,label: "Fundraisers", route: "/fundraisers" },
+  { icon: <MdGroups />,           label: "Community",   route: "/community"   },
+  { icon: <MdWorkHistory />,      label: "Jobs",        route: "/jobs"        },
+  { icon: <MdCalendarMonth />,    label: "Birthdays",   route: "/birthdays"   },
+  { icon: <MdOutlineExplore />,   label: "Explore",     route: "/explore"     },
 ];
 
 export const shortcuts = [
-  { label: "React Developers PK" },
-  { label: "MERN Stack Community" },
-  { label: "Lahore Coders" },
-  { label: "Next.js Pakistan" },
+  { label: "React Developers PK",  icon: <FaReact />   },
+  { label: "MERN Stack Community", icon: <FaLayerGroup /> },
+  { label: "Lahore Coders",        icon: <FaCode />    },
+  { label: "Next.js Pakistan",     icon: <FaNodeJs />  },
 ];

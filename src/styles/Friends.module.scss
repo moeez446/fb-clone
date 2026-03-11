@@ -1,0 +1,439 @@
+@mixin panel-collapsed {
+    width: $panel-collapsed-width;
+
+    .friends__panel-title {
+        display: none;
+    }
+
+    .friends__panel-icon-btn {
+        margin: 0 auto;
+    }
+
+    .friends__nav-label {
+        display: none;
+    }
+
+    .friends__nav-badge {
+        display: none;
+    }
+
+    .friends__nav-arrow {
+        display: none;
+    }
+
+    .friends__home-label {
+        display: none;
+    }
+
+    .friends__panel-top {
+        justify-content: center;
+        padding: 0 0.4rem 1.2rem;
+    }
+
+    .friends__nav-item {
+        justify-content: center;
+        padding: 0.8rem;
+    }
+
+    .friends__home-btn {
+        justify-content: center;
+        padding: 0.8rem;
+    }
+}
+
+// ─────────────────────────────────────────────────────────
+
+.friends {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+// ── Left Panel ────────────────────────────────────────────
+.friends__panel {
+    width: $panel-width;
+    flex-shrink: 0;
+    height: 100%;
+    border-right: 1px solid $fb-border;
+    padding: 1.6rem 0.8rem;
+    overflow-y: auto;
+    transition: width $transition-slow;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &--collapsed {
+        @include panel-collapsed;
+    }
+
+    // sidebar kabhi hide nahi — sirf collapse hoga
+    @media (max-width: 1192px) {
+        @include panel-collapsed;
+    }
+
+    @media (max-width: 768px) {
+        width: 60px;
+
+        .friends__panel-title {
+            display: none;
+        }
+
+        .friends__panel-icon-btn {
+            margin: 0 auto;
+        }
+
+        .friends__nav-label {
+            display: none;
+        }
+
+        .friends__nav-badge {
+            display: none;
+        }
+
+        .friends__nav-arrow {
+            display: none;
+        }
+
+        .friends__home-label {
+            display: none;
+        }
+
+        .friends__panel-top {
+            justify-content: center;
+            padding: 0 0.4rem 1.2rem;
+        }
+
+        .friends__nav-item {
+            justify-content: center;
+            padding: 0.6rem;
+        }
+
+        .friends__home-btn {
+            justify-content: center;
+            padding: 0.6rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        width: 52px;
+
+        .friends__nav-item {
+            padding: 0.4rem;
+        }
+
+        .friends__home-btn {
+            padding: 0.4rem;
+        }
+    }
+}
+
+// ── Toggle Button ─────────────────────────────────────────
+.friends__toggle {
+    position: absolute;
+    top: 3rem;
+    left: calc(#{$panel-width} - 1.8rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 50%;
+    border: 1px solid $fb-border;
+    background: $fb-white;
+    box-shadow: $shadow-md;
+    color: $fb-text-secondary;
+    cursor: pointer;
+    z-index: $z-toggle;
+    transition: left $transition-slow, background $transition-base, color $transition-base;
+
+    &:hover {
+        background: $bg-icon-btn-hover;
+        color: $fb-text-primary;
+        box-shadow: $shadow-lg;
+    }
+
+    &--collapsed {
+        left: calc(#{$panel-collapsed-width} - 1.8rem);
+    }
+
+    @media (max-width: 1192px) {
+        display: none;
+    }
+}
+
+// ── Panel Top ─────────────────────────────────────────────
+.friends__panel-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.8rem 1.2rem;
+    transition: padding $transition-slow;
+}
+
+.friends__panel-title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: $fb-text-primary;
+    white-space: nowrap;
+}
+
+.friends__panel-icon-btn {
+    width: $avatar-md;
+    height: $avatar-md;
+    border-radius: 50%;
+    border: none;
+    background: $bg-icon-btn;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: $fb-text-primary;
+    flex-shrink: 0;
+    transition: background $transition-base;
+
+    &:hover {
+        background: $bg-icon-btn-hover;
+    }
+}
+
+// ── Nav ───────────────────────────────────────────────────
+.friends__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.friends__nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: $border-radius;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: $fb-text-primary;
+    transition: background $transition-base, padding $transition-slow;
+
+    &:hover {
+        background: $bg-icon-btn;
+    }
+
+    &--active {
+        background: $fb-blue-light;
+        color: $fb-blue;
+
+        .friends__nav-icon {
+            background: $fb-blue-hover-bg;
+            color: $fb-blue;
+        }
+    }
+}
+
+.friends__nav-icon {
+    width: $avatar-md;
+    height: $avatar-md;
+    border-radius: 50%;
+    background: $bg-icon-btn;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: $fb-text-primary;
+}
+
+.friends__nav-label {
+    flex: 1;
+    white-space: nowrap;
+}
+
+.friends__nav-badge {
+    background: $color-badge-red;
+    color: $fb-white;
+    font-size: 1.2rem;
+    font-weight: 700;
+    min-width: 2rem;
+    height: 2rem;
+    border-radius: $border-radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem;
+}
+
+.friends__nav-arrow {
+    color: $fb-text-secondary;
+    margin-left: auto;
+}
+
+// ── Right Content ─────────────────────────────────────────
+.friends__content {
+    flex: 1;
+    min-width: 0;
+    padding: 2rem 2.4rem;
+    overflow-y: auto;
+}
+
+.friends__section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $fb-text-primary;
+    margin-bottom: 1.6rem;
+}
+
+// ── Grid ──────────────────────────────────────────────────
+.friends__grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.2rem;
+
+    &--wide {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    @media (max-width: 1400px) {
+        grid-template-columns: repeat(4, 1fr);
+
+        &--wide {
+            grid-template-columns: repeat(5, 1fr);
+        }
+    }
+
+    @media (max-width: 1192px) {
+        grid-template-columns: repeat(3, 1fr);
+
+        &--wide {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+
+        &--wide {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+}
+
+// ── Card ──────────────────────────────────────────────────
+.friends__card {
+    background: $fb-white;
+    border-radius: $border-radius-lg;
+    border: 1px solid $fb-border;
+    overflow: hidden;
+    box-shadow: $shadow;
+    transition: box-shadow $transition-base;
+
+    &:hover {
+        box-shadow: $shadow-lg;
+    }
+}
+
+.friends__card-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+}
+
+.friends__card-body {
+    padding: 0.8rem 1rem 1rem;
+}
+
+.friends__card-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $fb-text-primary;
+    margin-bottom: 0.3rem;
+}
+
+.friends__card-mutual {
+    font-size: 1.3rem;
+    color: $fb-text-secondary;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+.friends__card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.friends__btn-confirm {
+    width: 100%;
+    padding: 0.8rem;
+    background: $fb-blue;
+    color: $fb-white;
+    border: none;
+    border-radius: $border-radius;
+    font-size: 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    transition: background $transition-base;
+
+    &:hover {
+        background: $fb-blue-hover;
+    }
+}
+
+.friends__btn-delete {
+    width: 100%;
+    padding: 0.8rem;
+    background: $bg-icon-btn;
+    color: $fb-text-primary;
+    border: none;
+    border-radius: $border-radius;
+    font-size: 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background $transition-base;
+
+    &:hover {
+        background: $bg-icon-btn-hover;
+    }
+}
+
+// ── Home Button ───────────────────────────────────────────
+.friends__home-btn {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: $border-radius;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: $fb-text-primary;
+    margin-top: auto;
+    border-top: 1px solid $fb-border;
+    padding-top: 1.2rem;
+    transition: background $transition-base, padding $transition-slow;
+
+    &:hover {
+        background: $bg-hover-light;
+        color: $fb-blue;
+
+        .friends__nav-icon {
+            background: $fb-blue-hover-bg;
+            color: $fb-blue;
+        }
+    }
+}
+
+.friends__home-label {
+    white-space: nowrap;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: $fb-text-primary;
+}
