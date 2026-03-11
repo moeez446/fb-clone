@@ -13,7 +13,9 @@ const Navbar = () => {
 
             {/* ── Left ── */}
             <div className={styles['navbar__left']}>
-                <FaFacebook className={styles.logo} />
+                <NavLink to="/">
+                    <FaFacebook className={styles.logo} />
+                </NavLink>
                 <div className={styles.searchWrapper}>
                     <FaSearch color="#65676B" />
                     <input type="text" placeholder="Search Facebook" />

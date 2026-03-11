@@ -378,19 +378,18 @@
 
 .saved__home-btn {
   display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  padding: 0.8rem 1.2rem;
-  margin-top: auto;
-  border-top: 1px solid $fb-border;
-  padding-top: 1.2rem;
-  cursor: pointer;
-  border-radius: $border-radius;
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: $fb-text-primary;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.8rem 1.2rem;
+    margin-bottom: 0.4rem;
+    cursor: pointer;
+    border-radius: $border-radius;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: $fb-text-primary;
+    transition: background 0.15s, padding 0.25s;
 
-  &:hover {
-    background: #e4e6eb;
-  }
+    &:hover {
+        background: $bg-hover-light;
+    }
 }

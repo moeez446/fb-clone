@@ -1,29 +1,4 @@
 // ─────────────────────────────────────────────────────────
-// Events.module.scss  —  same pattern as Friends.module.scss
-// ─────────────────────────────────────────────────────────
-
-// ── Variables (match globals) ──────────────────────────────
-$fb-blue: #1877f2;
-$fb-blue-light: #e7f3ff;
-$fb-blue-hover: #cce0ff;
-$fb-border: #e4e6eb;
-$fb-text-primary: #050505;
-$fb-text-secondary: #65676b;
-$fb-white: #ffffff;
-$fb-bg: #f0f2f5;
-$bg-icon-btn: #e4e6eb;
-$bg-icon-btn-hover: #d8dadf;
-$bg-hover-light: #f0f7ff;
-$border-radius: 8px;
-$shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-
-// ── Panel widths ───────────────────────────────────────────
-$panel-width: 36rem;
-$panel-collapsed-width: 7.2rem;
-
-// ─────────────────────────────────────────────────────────
-// Root
-// ─────────────────────────────────────────────────────────
 .events {
     display: flex;
     width: 100%;
@@ -31,9 +6,7 @@ $panel-collapsed-width: 7.2rem;
     position: relative;
 }
 
-// ─────────────────────────────────────────────────────────
-// Left Panel
-// ─────────────────────────────────────────────────────────
+// ── Left Panel ────────────────────────────────────────────
 .events__panel {
     width: $panel-width;
     flex-shrink: 0;
@@ -133,7 +106,6 @@ $panel-collapsed-width: 7.2rem;
             display: none;
         }
     }
-
 }
 
 // ── Toggle Button ─────────────────────────────────────────
@@ -224,10 +196,6 @@ $panel-collapsed-width: 7.2rem;
     font-weight: 500;
     color: $fb-text-primary;
     transition: background 0.15s, padding 0.25s;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 
     &:hover {
         background: #e4e6eb;
@@ -278,26 +246,21 @@ $panel-collapsed-width: 7.2rem;
 .events__nav-arrow {
     color: $fb-text-secondary;
     margin-left: auto;
+    font-size: 2rem;
 }
 
-.events__nav-divider {
-    height: 1px;
-    background: $fb-border;
-    margin: 0.8rem 0.4rem;
-}
-
-// ── Home Button ───────────────────────────────────────────
+// ── Home Button — TOP pe, no border ───────────────────────
 .events__home-btn {
     display: flex;
     align-items: center;
     gap: 1.2rem;
-    padding: 1.2rem 1.2rem 0.8rem;
+    padding: 0.8rem 1.2rem;
+    margin-bottom: 0.4rem;
     border-radius: $border-radius;
     cursor: pointer;
     font-size: 1.5rem;
     font-weight: 500;
     color: $fb-text-primary;
-    border-top: 1px solid $fb-border;
     transition: background 0.15s, padding 0.25s;
 
     &:hover {
@@ -333,10 +296,9 @@ $panel-collapsed-width: 7.2rem;
     justify-content: space-between;
     margin-bottom: 1.6rem;
 
-    @media (max-width : 530px) {
+    @media (max-width: 530px) {
         flex-direction: column;
         gap: 2rem;
-
     }
 }
 
@@ -419,6 +381,9 @@ $panel-collapsed-width: 7.2rem;
 
     @media (max-width: 1200px) {
         grid-template-columns: repeat(2, 1fr);
+        width: 70rem;
+        max-width: 100%;
+        margin-inline: auto;
 
         &--wide {
             grid-template-columns: repeat(3, 1fr);
@@ -427,6 +392,7 @@ $panel-collapsed-width: 7.2rem;
 
     @media (max-width: 600px) {
         grid-template-columns: 1fr;
+        width: 35rem;
 
         &--wide {
             grid-template-columns: 1fr;

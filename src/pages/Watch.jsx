@@ -23,6 +23,15 @@ export default function Watch() {
             {/* ── Left Panel ── */}
             <div className={`${styles['watch__panel']} ${collapsed ? styles['watch__panel--collapsed'] : ''}`}>
 
+                {/* ── Home Button — BILKUL TOP pe ── */}
+                <div
+                    className={styles['watch__home-btn']}
+                    onClick={() => navigate('/')}
+                >
+                    <span className={styles['watch__nav-icon']}><MdHome size={22} /></span>
+                    <span className={styles['watch__nav-label']}>Back to Home</span>
+                </div>
+
                 <h2 className={styles['watch__panel-title']}>Watch</h2>
 
                 <nav className={styles['watch__nav']}>
@@ -48,15 +57,6 @@ export default function Watch() {
                     </div>
 
                 </nav>
-
-                {/* ── Home Button ── */}
-                <div
-                    className={styles['watch__home-btn']}
-                    onClick={() => navigate('/')}
-                >
-                    <span className={styles['watch__nav-icon']}><MdHome size={22} /></span>
-                    <span className={styles['watch__nav-label']}>Back to Home</span>
-                </div>
 
             </div>
 

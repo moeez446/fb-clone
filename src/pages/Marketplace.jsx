@@ -15,6 +15,16 @@ export default function Marketplace() {
             {/* ── Left Panel ── */}
             <div className={`${styles['market__panel']} ${collapsed ? styles['market__panel--collapsed'] : ''}`}>
 
+                {/* ── Home Button — BILKUL TOP pe ── */}
+                <div
+                    className={styles['market__home-btn']}
+                    onClick={() => navigate('/')}
+                    title="Back to Home"
+                >
+                    <span className={styles['market__nav-icon']}><MdHome size={20} /></span>
+                    <span className={styles['market__home-label']}>Back to Home</span>
+                </div>
+
                 <div className={styles['market__panel-top']}>
                     <h2 className={styles['market__panel-title']}>Marketplace</h2>
                     <button className={styles['market__panel-icon-btn']}>
@@ -41,16 +51,6 @@ export default function Marketplace() {
                         </div>
                     ))}
                 </nav>
-
-                {/* ── Home Button ── */}
-                <div
-                    className={styles['market__home-btn']}
-                    onClick={() => navigate('/')}
-                    title="Back to Home"
-                >
-                    <span className={styles['market__nav-icon']}><MdHome size={20} /></span>
-                    <span className={styles['market__home-label']}>Back to Home</span>
-                </div>
 
             </div>
 

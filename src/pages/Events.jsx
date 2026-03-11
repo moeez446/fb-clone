@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Events.module.scss';
 import {
   MdAddBox, MdLocationOn, MdPeople,
-  MdGridView,MdTableRows, MdChevronLeft, MdChevronRight,
+  MdGridView, MdTableRows, MdChevronLeft, MdChevronRight,
   MdSettings, MdHome,
 } from 'react-icons/md';
 import { EVENT_FILTERS, EVENTS } from '../data/Eventsdata.jsx';
@@ -22,6 +22,16 @@ export default function Events() {
 
       {/* ── Left Panel ── */}
       <div className={`${s.events__panel} ${collapsed ? s['events__panel--collapsed'] : ''}`}>
+
+        {/* ── Home Button — BILKUL TOP pe ── */}
+        <div
+          className={s['events__home-btn']}
+          onClick={() => navigate('/')}
+          title="Back to Home"
+        >
+          <span className={s['events__nav-icon']}><MdHome size={20} /></span>
+          <span className={s['events__home-label']}>Back to Home</span>
+        </div>
 
         <div className={s['events__panel-top']}>
           <h2 className={s['events__panel-title']}>Events</h2>
@@ -46,16 +56,6 @@ export default function Events() {
           ))}
         </nav>
 
-        {/* ── Back to Home — divider + separate btn like Friends ── */}
-        <div className={s['events__nav-divider']} />
-        <div
-          className={s['events__home-btn']}
-          onClick={() => navigate('/')}
-          title="Back to Home"
-        >
-          <span className={s['events__nav-icon']}><MdHome size={20} /></span>
-          <span className={s['events__home-label']}>Back to Home</span>
-        </div>
       </div>
 
       {/* ── Toggle Button ── */}

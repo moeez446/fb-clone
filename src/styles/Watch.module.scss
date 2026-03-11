@@ -2,7 +2,7 @@
     display: flex;
     width: 100%;
     height: 100%;
-    position: relative; // toggle button ke liye
+    position: relative;
 }
 
 // ── Left Panel ────────────────────────────────────────────
@@ -14,7 +14,6 @@
     overflow-y: auto;
     transition: width 0.25s ease;
 
-    // ── Manual Collapsed ──
     &--collapsed {
         width: 7.2rem;
 
@@ -30,9 +29,13 @@
             justify-content: center;
             padding: 0.8rem;
         }
+
+        .watch__home-btn {
+            justify-content: center;
+            padding: 0.8rem;
+        }
     }
 
-    // ── Responsive — choti screen par auto collapse ──
     @media (max-width: 1100px) {
         width: 7.2rem;
 
@@ -48,10 +51,15 @@
             justify-content: center;
             padding: 0.8rem;
         }
+
+        .watch__home-btn {
+            justify-content: center;
+            padding: 0.8rem;
+        }
     }
 }
 
-// ── Toggle Button — bilkul border par ─────────────────────
+// ── Toggle Button ─────────────────────────────────────────
 .watch__toggle {
     position: absolute;
     top: 3rem;
@@ -156,7 +164,7 @@
     margin-bottom: 1.6rem;
 }
 
-// ── Grid — toggle par 1 box zyada, responsive breakpoints ─
+// ── Grid ──────────────────────────────────────────────────
 .watch__grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -176,8 +184,8 @@
 
     @media (max-width: 1100px) {
         grid-template-columns: repeat(2, 1fr);
-        width: 70rem;
-        max-width: 100%;
+        max-width: 70rem;
+        margin: 0 auto;
 
         &--wide {
             grid-template-columns: repeat(2, 1fr);
@@ -186,14 +194,13 @@
 
     @media (max-width: 575px) {
         grid-template-columns: repeat(1, 1fr);
-        width: 30rem;
-        max-width: 100%;
+        max-width: 30rem;
+        margin: 0 auto;
 
         &--wide {
             grid-template-columns: repeat(1, 1fr);
         }
     }
-
 }
 
 // ── Card ──────────────────────────────────────────────────
@@ -264,19 +271,19 @@
     color: $fb-text-secondary;
 }
 
+// ── Home Button — TOP pe, no border ───────────────────────
 .watch__home-btn {
     display: flex;
     align-items: center;
     gap: 1.2rem;
     padding: 0.8rem 1.2rem;
-    margin-top: auto;
-    border-top: 1px solid $fb-border;
-    padding-top: 1.2rem;
+    margin-bottom: 0.4rem;
     cursor: pointer;
     border-radius: $border-radius;
     font-size: 1.5rem;
     font-weight: 500;
     color: $fb-text-primary;
+    transition: background 0.15s, padding 0.25s;
 
     &:hover {
         background: $bg-hover-light;

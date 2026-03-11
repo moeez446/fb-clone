@@ -14,6 +14,16 @@ export default function Friends() {
             {/* ── Left Panel ── */}
             <div className={`${styles['friends__panel']} ${collapsed ? styles['friends__panel--collapsed'] : ''}`}>
 
+                {/* ── Home Button — BILKUL TOP pe ── */}
+                <div
+                    className={styles['friends__home-btn']}
+                    onClick={() => navigate('/')}
+                    title="Back to Home"
+                >
+                    <span className={styles['friends__nav-icon']}><MdHome size={20} /></span>
+                    <span className={styles['friends__home-label']}>Back to Home</span>
+                </div>
+
                 <div className={styles['friends__panel-top']}>
                     <h2 className={styles['friends__panel-title']}>Friends</h2>
                     <button className={styles['friends__panel-icon-btn']}>
@@ -39,16 +49,6 @@ export default function Friends() {
                     ))}
                 </nav>
 
-                {/* ── Home Button ── */}
-                <div
-                    className={styles['friends__home-btn']}
-                    onClick={() => navigate('/')}
-                    title="Back to Home"
-                >
-                    <span className={styles['friends__nav-icon']}><MdHome size={20} /></span>
-                    <span className={styles['friends__home-label']}>Back to Home</span>
-                </div>
-
             </div>
 
             {/* ── Toggle Button ── */}
@@ -71,9 +71,10 @@ export default function Friends() {
                                 <p className={styles['friends__card-mutual']}>
                                     <MdPeople size={14} /> {r.mutual} mutual friends
                                 </p>
-                                <div className={styles['friends__card-actions']}></div>
-                                <button className={styles['friends__btn-confirm']}>Confirm</button>
-                                <button className={styles['friends__btn-delete']}>Delete</button>
+                                <div className={styles['friends__card-actions']}>
+                                    <button className={styles['friends__btn-confirm']}>Confirm</button>
+                                    <button className={styles['friends__btn-delete']}>Delete</button>
+                                </div>
                             </div>
                         </div>
                     ))}

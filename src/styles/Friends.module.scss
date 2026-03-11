@@ -69,7 +69,6 @@
         @include panel-collapsed;
     }
 
-    // sidebar kabhi hide nahi — sirf collapse hoga
     @media (max-width: 1192px) {
         @include panel-collapsed;
     }
@@ -360,10 +359,11 @@
     margin-bottom: 1rem;
 }
 
+// ── Card Actions — gap updated ─────────────────────────────
 .friends__card-actions {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 1rem;
 }
 
 .friends__btn-confirm {
@@ -404,7 +404,7 @@
     }
 }
 
-// ── Home Button ───────────────────────────────────────────
+// ── Home Button — TOP pe, no border ───────────────────────
 .friends__home-btn {
     display: flex;
     align-items: center;
@@ -415,9 +415,7 @@
     font-size: 1.5rem;
     font-weight: 500;
     color: $fb-text-primary;
-    margin-top: auto;
-    border-top: 1px solid $fb-border;
-    padding-top: 1.2rem;
+    margin-bottom: 0.4rem;
     transition: background $transition-base, padding $transition-slow;
 
     &:hover {

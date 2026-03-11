@@ -22,6 +22,20 @@ export default function Saved() {
             {/* ── Left Panel ── */}
             <div className={`${styles['saved__panel']} ${collapsed ? styles['saved__panel--collapsed'] : ''}`}>
 
+                {/* ── Home Button ── */}
+                <div
+                    className={styles['saved__home-btn']}
+                    onClick={() => navigate('/')}
+                >
+                    <span className={styles['saved__nav-icon']}>
+                        <MdHome size={20} />
+                    </span>
+
+                    <span className={styles['saved__nav-label']}>
+                        Back to Home
+                    </span>
+                </div>
+
                 <div className={styles['saved__panel-top']}>
                     <h2 className={styles['saved__panel-title']}>Saved</h2>
                     <button className={styles['saved__panel-icon-btn']}>
@@ -57,20 +71,6 @@ export default function Saved() {
                     ))}
 
                 </nav>
-
-                {/* ── Home Button ── */}
-                <div
-                    className={styles['saved__home-btn']}
-                    onClick={() => navigate('/')}
-                >
-                    <span className={styles['saved__nav-icon']}>
-                        <MdHome size={20} />
-                    </span>
-
-                    <span className={styles['saved__nav-label']}>
-                        Back to Home
-                    </span>
-                </div>
 
             </div>
 
