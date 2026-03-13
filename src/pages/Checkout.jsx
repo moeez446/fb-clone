@@ -30,7 +30,7 @@ const SuccessModal = ({ onClose }) => {
 /* ── Checkout Page ── */
 const Checkout = () => {
     const navigate = useNavigate();
-    const { cartItems, totalPrice, removeFromCart, updateQty, clearCart } = useCart();
+    const { cartItems, totalPrice, removeFromCart, updateQty, clearCart, placeOrder } = useCart();
     const [showSuccess, setShowSuccess] = useState(false);
 
     const [form, setForm] = useState({
@@ -56,6 +56,7 @@ const Checkout = () => {
 
     const handleOrder = (e) => {
         e.preventDefault();
+        placeOrder(form, cartItems, grand);
         setShowSuccess(true);
     };
 

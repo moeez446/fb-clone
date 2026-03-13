@@ -14,6 +14,10 @@ import Login from './pages/Login';
 import Products from './pages/Products';
 import Checkout from './pages/Checkout';
 import Toast from './components/Toast';
+import Dashboard from './pages/Dashboard';
+import MyOrders from './pages/MyOrders';
+import ProductDetail from './pages/ProductDetail';
+import { ProductProvider } from './context/ProductContext';
 
 function FeedPage() {
   return (
@@ -65,6 +69,9 @@ function Layout() {
             <Route path="/login"       element={<Login />}       />
             <Route path="/products"    element={<Products />}    />
             <Route path="/checkout"    element={<Checkout />}    />
+            <Route path="/dashboard"   element={<Dashboard />}   />
+            <Route path="/my-orders"    element={<MyOrders />}    />
+            <Route path="/products/:id"  element={<ProductDetail />} />
             <Route path="/gaming"      element={<ComingSoon />}  />
             <Route path="/memories"    element={<ComingSoon />}  />
             <Route path="/groups"      element={<ComingSoon />}  />
@@ -96,11 +103,13 @@ function Layout() {
 
 function App() {
   return (
+    <ProductProvider>
     <CartProvider>
       <BrowserRouter>
         <Layout />
       </BrowserRouter>
     </CartProvider>
+    </ProductProvider>
   );
 }
 

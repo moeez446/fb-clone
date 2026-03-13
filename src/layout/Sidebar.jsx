@@ -9,17 +9,19 @@ import {
   MdEmail,
   MdLogout,
   MdStorefront,
+  MdDashboard,
+  MdReceiptLong,
 } from "react-icons/md";
 import { menuItemsMain, menuItemsExtra, shortcuts } from "../data/Sidebardata";
 
 const Sidebar = () => {
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore]   = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate  = useNavigate();
+  const location  = useLocation();
 
   const handleClick = (route) => { if (route) navigate(route); };
-  const isActive = (route) => location.pathname === route;
+  const isActive    = (route) => location.pathname === route;
 
   const handleLogout = () => navigate("/login");
 
@@ -114,6 +116,32 @@ const Sidebar = () => {
         </div>
 
         <div className={styles["sidebar__divider"]} />
+
+        {/* ── Dashboard Button ── */}
+        <li
+          className={`${styles["sidebar__item"]} ${isActive("/dashboard") ? styles["sidebar__item--active"] : ""}`}
+          onClick={() => navigate("/dashboard")}
+        >
+          <span className={`${styles["sidebar__icon"]} ${isActive("/dashboard") ? styles["sidebar__icon--active"] : ""}`}>
+            <MdDashboard size={20} />
+          </span>
+          <span className={`${styles["sidebar__label"]} ${isActive("/dashboard") ? styles["sidebar__label--active"] : ""}`}>
+            Dashboard
+          </span>
+        </li>
+
+        {/* ── My Orders Button ── */}
+        <li
+          className={`${styles["sidebar__item"]} ${isActive("/my-orders") ? styles["sidebar__item--active"] : ""}`}
+          onClick={() => navigate("/my-orders")}
+        >
+          <span className={`${styles["sidebar__icon"]} ${isActive("/my-orders") ? styles["sidebar__icon--active"] : ""}`}>
+            <MdReceiptLong size={20} />
+          </span>
+          <span className={`${styles["sidebar__label"]} ${isActive("/my-orders") ? styles["sidebar__label--active"] : ""}`}>
+            My Orders
+          </span>
+        </li>
 
         {/* ── Products Button ── */}
         <li

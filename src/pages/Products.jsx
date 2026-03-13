@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   MdStar, MdStarHalf, MdStarBorder,
   MdShoppingCart, MdFavoriteBorder, MdFavorite,
   MdChevronLeft, MdChevronRight,
 } from "react-icons/md";
-import { PRODUCTS, CATEGORIES } from "../data/Productsdata";
+import { CATEGORIES } from "../data/Productsdata";
+import { useProducts } from "../context/ProductContext";
 import { useCart } from "../context/CartContext";
 import styles from "../styles/Products.module.scss";
 
@@ -27,19 +29,19 @@ const loadLikes = () => {
     if (fromLS) return new Set(JSON.parse(fromLS));
     const fromCookie = getCookie("product_likes");
     if (fromCookie) return new Set(JSON.parse(fromCookie));
-  } catch {}
+  } catch { }
   return new Set();
 };
 const saveLikes = (likesSet) => {
   const arr = JSON.stringify([...likesSet]);
-  try { localStorage.setItem("product_likes", arr); } catch {}
+  try { localStorage.setItem("product_likes", arr); } catch { }
   setCookie("product_likes", arr);
 };
 
 /* ── Star Rating ── */
 const Stars = ({ rating }) => {
-  const full  = Math.floor(rating);
-  const half  = rating % 1 >= 0.5;
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.5;
   const empty = 5 - full - (half ? 1 : 0);
   return (
     <span className={styles["product__stars"]}>
@@ -54,6 +56,7 @@ const Stars = ({ rating }) => {
 const ProductCard = ({ product, liked, onToggleLike }) => {
   const [added, setAdded] = useState(false);
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   const handleAdd = () => {
     addToCart(product);
@@ -62,11 +65,11 @@ const ProductCard = ({ product, liked, onToggleLike }) => {
   };
 
   return (
-    <div className={styles["product__card"]}>
+    <div className={styles["product__card"]} onClick={() => navigate(`/products/${product.id}`)} style={{ cursor: "pointer" }}>
       {product.badge && (
         <span className={styles["product__badge"]}>{product.badge}</span>
       )}
-      <button className={styles["product__wishlist"]} onClick={() => onToggleLike(product.id)}>
+      <button className={styles["product__wishlist"]} onClick={(e) => { e.stopPropagation(); onToggleLike(product.id); }}>
         {liked
           ? <MdFavorite className={styles["product__wishlist--active"]} />
           : <MdFavoriteBorder />}
@@ -85,7 +88,7 @@ const ProductCard = ({ product, liked, onToggleLike }) => {
           <span className={styles["product__price"]}>Rs {product.price.toLocaleString()}</span>
           <button
             className={`${styles["product__addBtn"]} ${added ? styles["product__addBtn--added"] : ""}`}
-            onClick={handleAdd}
+            onClick={(e) => { e.stopPropagation(); handleAdd(); }}
           >
             <MdShoppingCart size={16} />
             {added ? "Added!" : "Add"}
@@ -136,10 +139,11 @@ const Pagination = ({ current, total, onChange }) => {
 
 /* ── Products Page ── */
 const Products = () => {
+  const { products: PRODUCTS } = useProducts();
   const [activeCategory, setActiveCategory] = useState("All");
-  const [search, setSearch]                 = useState("");
-  const [currentPage, setCurrentPage]       = useState(1);
-  const [likes, setLikes]                   = useState(() => loadLikes());
+  const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [likes, setLikes] = useState(() => loadLikes());
 
   useEffect(() => { saveLikes(likes); }, [likes]);
 
@@ -155,14 +159,14 @@ const Products = () => {
   };
 
   const filtered = PRODUCTS.filter((p) => {
-    const matchCat    = activeCategory === "All" || p.category === activeCategory;
+    const matchCat = activeCategory === "All" || p.category === activeCategory;
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
     return matchCat && matchSearch;
   });
 
-  const totalPages  = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-  const startIdx    = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginated   = filtered.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginated = filtered.slice(startIdx, startIdx + ITEMS_PER_PAGE);
 
   const handlePageChange = (p) => {
     setCurrentPage(p);
