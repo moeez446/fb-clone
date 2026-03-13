@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { CartProvider, useCart } from './context/CartContext';
 import Navbar from './layout/Navbar';
 import Sidebar from './layout/Sidebar';
 import RightBar from './layout/Rightbar';
@@ -9,6 +10,10 @@ import Marketplace from './pages/Marketplace';
 import Saved from './pages/Saved';
 import Events from './pages/Events';
 import ComingSoon from './pages/CommingSoon';
+import Login from './pages/Login';
+import Products from './pages/Products';
+import Checkout from './pages/Checkout';
+import Toast from './components/Toast';
 
 function FeedPage() {
   return (
@@ -18,19 +23,32 @@ function FeedPage() {
   );
 }
 
+// Pages that have their OWN left panel/sidebar — main sidebar hides on these
+const PAGES_WITH_OWN_SIDEBAR = [
+  '/login',
+  '/register',
+  '/forgot',
+];
+
 function Layout() {
   const location = useLocation();
-  const isFeed = location.pathname === '/';
+  const { toasts, removeToast } = useCart();
+
+  const isFeed      = location.pathname === '/';
+  const hideNavbar  = ['/login', '/register', '/forgot'].includes(location.pathname);
+  const hideSidebar = PAGES_WITH_OWN_SIDEBAR.some(p => location.pathname.startsWith(p));
 
   return (
     <div className="app">
-      <header>
-        <Navbar />
-      </header>
+      {!hideNavbar && (
+        <header>
+          <Navbar />
+        </header>
+      )}
 
       <div className="app__container">
 
-        {isFeed && (
+        {!hideSidebar && (
           <aside className="app__sidebar">
             <Sidebar />
           </aside>
@@ -38,15 +56,15 @@ function Layout() {
 
         <main className="app__main">
           <Routes>
-            {/* ── Main Pages ── */}
             <Route path="/"            element={<FeedPage />}    />
             <Route path="/friends"     element={<Friends />}     />
             <Route path="/watch"       element={<Watch />}       />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/saved"       element={<Saved />}       />
             <Route path="/events"      element={<Events />}      />
-
-            {/* ── Coming Soon Pages ── */}
+            <Route path="/login"       element={<Login />}       />
+            <Route path="/products"    element={<Products />}    />
+            <Route path="/checkout"    element={<Checkout />}    />
             <Route path="/gaming"      element={<ComingSoon />}  />
             <Route path="/memories"    element={<ComingSoon />}  />
             <Route path="/groups"      element={<ComingSoon />}  />
@@ -58,8 +76,6 @@ function Layout() {
             <Route path="/jobs"        element={<ComingSoon />}  />
             <Route path="/birthdays"   element={<ComingSoon />}  />
             <Route path="/explore"     element={<ComingSoon />}  />
-
-            {/* ── 404 Fallback ── */}
             <Route path="*"            element={<ComingSoon />}  />
           </Routes>
         </main>
@@ -71,15 +87,20 @@ function Layout() {
         )}
 
       </div>
+
+      {/* ── Global Toast ── */}
+      <Toast toasts={toasts} removeToast={removeToast} />
     </div>
   );
 }
 
 function App() {
   return (
-    <BrowserRouter>
-      <Layout />
-    </BrowserRouter>
+    <CartProvider>
+      <BrowserRouter>
+        <Layout />
+      </BrowserRouter>
+    </CartProvider>
   );
 }
 

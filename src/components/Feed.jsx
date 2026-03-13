@@ -1,6 +1,9 @@
 import { useState, useRef } from "react";
 import styles from "../styles/Feed.module.scss";
 import { STORIES, POSTS } from "../data/Feeddata";
+import StoryViewer from "../components/Storyviewer";
+import CreatePostModal from "../components/Createpostmodal";
+import MediaModal from "../components/Mediamodal";
 import {
   MdThumbUp, MdOutlineThumbUp,
   MdChatBubbleOutline, MdOutlineShare,
@@ -10,15 +13,15 @@ import {
   MdChevronLeft, MdChevronRight,
 } from "react-icons/md";
 
-// ── Privacy Icon ──────────────────────────────────────────────────────────────
+// ── Privacy Icon ──────────────────────────────────────────
 const PrivacyIcon = ({ type }) => {
-  if (type === "friends") return <MdPeople size={12} />;
-  if (type === "only-me") return <MdLock   size={12} />;
+  if (type === "friends")  return <MdPeople size={12} />;
+  if (type === "only-me")  return <MdLock   size={12} />;
   return <MdPublic size={12} />;
 };
 
-// ── Stories ───────────────────────────────────────────────────────────────────
-function Stories() {
+// ── Stories ───────────────────────────────────────────────
+function Stories({ onStoryClick }) {
   const scrollRef = useRef(null);
   const [showLeft,  setShowLeft]  = useState(false);
   const [showRight, setShowRight] = useState(true);
@@ -38,21 +41,19 @@ function Stories() {
   return (
     <div className={styles['stories-wrap']}>
 
-      {/* Left arrow */}
       {showLeft && (
         <button className={`${styles['stories__arrow']} ${styles['stories__arrow--left']}`} onClick={scrollLeft}>
           <MdChevronLeft size={24} />
         </button>
       )}
 
-      {/* Stories row */}
-      <div
-        className={styles['stories']}
-        ref={scrollRef}
-        onScroll={handleScroll}
-      >
-        {STORIES.map((s) => (
-          <div className={styles['stories__item']} key={s.id}>
+      <div className={styles['stories']} ref={scrollRef} onScroll={handleScroll}>
+        {STORIES.map((s, i) => (
+          <div
+            className={styles['stories__item']}
+            key={s.id}
+            onClick={() => !s.isOwn && onStoryClick(i)}
+          >
             <div
               className={styles['stories__bg']}
               style={{ backgroundImage: `url(${s.bg || "https://picsum.photos/seed/own/200/350"})` }}
@@ -70,7 +71,6 @@ function Stories() {
         ))}
       </div>
 
-      {/* Right arrow */}
       {showRight && (
         <button className={`${styles['stories__arrow']} ${styles['stories__arrow--right']}`} onClick={scrollRight}>
           <MdChevronRight size={24} />
@@ -81,23 +81,25 @@ function Stories() {
   );
 }
 
-// ── Create Post ───────────────────────────────────────────────────────────────
-function CreatePost() {
+// ── Create Post ───────────────────────────────────────────
+function CreatePost({ onOpenPost, onOpenVideo, onOpenPhoto, onOpenFeeling }) {
   return (
     <div className={styles['create-post']}>
       <div className={styles['create-post__top']}>
         <img src="https://i.pravatar.cc/150?img=3" alt="you" className={styles['create-post__avatar']} />
-        <div className={styles['create-post__input']}>What's on your mind?</div>
+        <div className={styles['create-post__input']} onClick={onOpenPost}>
+          What's on your mind?
+        </div>
       </div>
       <div className={styles['create-post__divider']} />
       <div className={styles['create-post__actions']}>
-        <button className={styles['create-post__btn']}>
-          <MdVideoCall         size={24} color="#f3425f" /><span>Live video</span>
+        <button className={styles['create-post__btn']} onClick={onOpenVideo}>
+          <MdVideoCall          size={24} color="#f3425f" /><span>Live video</span>
         </button>
-        <button className={styles['create-post__btn']}>
-          <MdAddPhotoAlternate size={24} color="#45bd62" /><span>Photo/video</span>
+        <button className={styles['create-post__btn']} onClick={onOpenPhoto}>
+          <MdAddPhotoAlternate  size={24} color="#45bd62" /><span>Photo/video</span>
         </button>
-        <button className={styles['create-post__btn']}>
+        <button className={styles['create-post__btn']} onClick={onOpenFeeling}>
           <MdSentimentSatisfied size={24} color="#f7b928" /><span>Feeling/activity</span>
         </button>
       </div>
@@ -105,7 +107,7 @@ function CreatePost() {
   );
 }
 
-// ── Post Card ─────────────────────────────────────────────────────────────────
+// ── Post Card ─────────────────────────────────────────────
 function PostCard({ post }) {
   const [liked,     setLiked]     = useState(false);
   const [likeCount, setLikeCount] = useState(post.likes);
@@ -184,15 +186,54 @@ function PostCard({ post }) {
   );
 }
 
-// ── Feed ──────────────────────────────────────────────────────────────────────
+// ── Feed ──────────────────────────────────────────────────
 export default function Feed() {
+  const [storyIndex,    setStoryIndex]    = useState(null);
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [mediaMode,     setMediaMode]     = useState(null);
+
+  // isOwn wali story filter ke baad sahi index
+  const filteredStories = STORIES.filter(s => !s.isOwn);
+
+  const handleStoryClick = (i) => {
+    const clickedStory = STORIES[i];
+    const filteredIndex = filteredStories.findIndex(s => s.id === clickedStory.id);
+    if (filteredIndex !== -1) setStoryIndex(filteredIndex);
+  };
+
   return (
     <div className={styles['feed']}>
-      <Stories />
-      <CreatePost />
+
+      <Stories onStoryClick={handleStoryClick} />
+
+      <CreatePost
+        onOpenPost={()    => setShowPostModal(true)}
+        onOpenVideo={()   => setMediaMode('video')}
+        onOpenPhoto={()   => setMediaMode('photo')}
+        onOpenFeeling={()  => setMediaMode('feeling')}
+      />
+
       {POSTS.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
+
+      {/* ── Modals ── */}
+      {storyIndex !== null && (
+        <StoryViewer
+          stories={filteredStories}
+          startIndex={storyIndex}
+          onClose={() => setStoryIndex(null)}
+        />
+      )}
+
+      {showPostModal && (
+        <CreatePostModal onClose={() => setShowPostModal(false)} />
+      )}
+
+      {mediaMode && (
+        <MediaModal mode={mediaMode} onClose={() => setMediaMode(null)} />
+      )}
+
     </div>
   );
 }

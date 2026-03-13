@@ -1,0 +1,130 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-modal;
+}
+
+.viewer {
+  position: relative;
+  width: 36rem;
+  height: 64rem;
+  border-radius: $border-radius-xl;
+  overflow: hidden;
+  background: #000;
+
+  @media (max-width: 480px) {
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+  }
+}
+
+// ── Progress Bars ─────────────────────────────────────────
+.progress {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  right: 1.2rem;
+  display: flex;
+  gap: 0.4rem;
+  z-index: 2;
+}
+
+.progress__bar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: $border-radius-full;
+  overflow: hidden;
+}
+
+.progress__fill {
+  height: 100%;
+  background: $fb-white;
+  border-radius: $border-radius-full;
+}
+
+// ── Header ────────────────────────────────────────────────
+.header {
+  position: absolute;
+  top: 2.4rem;
+  left: 1.2rem;
+  right: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 2;
+}
+
+.avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 2px solid $fb-white;
+  object-fit: cover;
+}
+
+.username {
+  flex: 1;
+  color: $fb-white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.close {
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
+  color: $fb-white;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background $transition-base;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.65);
+  }
+}
+
+// ── Background Image ──────────────────────────────────────
+.bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+// ── Arrows ────────────────────────────────────────────────
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: $fb-white;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  transition: background $transition-base;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  &--left  { left: 1rem; }
+  &--right { right: 1rem; }
+}

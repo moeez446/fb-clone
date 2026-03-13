@@ -1,218 +1,92 @@
 .watch {
-    display: flex;
+    padding: 2rem 2.4rem;
     width: 100%;
-    height: 100%;
-    position: relative;
-}
+    box-sizing: border-box;
 
-// ── Left Panel ────────────────────────────────────────────
-.watch__panel {
-    width: 36rem;
-    flex-shrink: 0;
-    border-right: 1px solid $fb-border;
-    padding: 1.6rem 0.8rem;
-    overflow-y: auto;
-    transition: width 0.25s ease;
-
-    &--collapsed {
-        width: 7.2rem;
-
-        .watch__panel-title {
-            display: none;
-        }
-
-        .watch__nav-label {
-            display: none;
-        }
-
-        .watch__nav-item {
-            justify-content: center;
-            padding: 0.8rem;
-        }
-
-        .watch__home-btn {
-            justify-content: center;
-            padding: 0.8rem;
-        }
-    }
-
-    @media (max-width: 1100px) {
-        width: 7.2rem;
-
-        .watch__panel-title {
-            display: none;
-        }
-
-        .watch__nav-label {
-            display: none;
-        }
-
-        .watch__nav-item {
-            justify-content: center;
-            padding: 0.8rem;
-        }
-
-        .watch__home-btn {
-            justify-content: center;
-            padding: 0.8rem;
-        }
+    @media (max-width: 600px) {
+        padding: 1.6rem 1.2rem;
     }
 }
 
-// ── Toggle Button ─────────────────────────────────────────
-.watch__toggle {
-    position: absolute;
-    top: 3rem;
-    left: calc(36rem - 1.8rem);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 3.6rem;
-    height: 3.6rem;
-    border-radius: 50%;
-    border: 1px solid $fb-border;
-    background: $fb-white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-    color: $fb-text-secondary;
-    cursor: pointer;
-    z-index: 20;
-    transition: left 0.25s ease, background 0.15s, color 0.15s;
-
-    &:hover {
-        background: $bg-icon-btn-hover;
-        color: $fb-text-primary;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-    }
-
-    &--collapsed {
-        left: calc(7.2rem - 1.8rem);
-    }
-
-    @media (max-width: 1100px) {
-        display: none;
-    }
+/* ── Header + Tabs ── */
+.watch__tabs {
+    margin-bottom: 2.4rem;
 }
 
-.watch__panel-title {
+.watch__title {
     font-size: 2.4rem;
     font-weight: 700;
-    color: $fb-text-primary;
-    padding: 0 0.8rem 1.2rem;
-    white-space: nowrap;
+    color: #1c1e21;
+    margin-bottom: 1.4rem;
 }
 
-.watch__nav {
+.watch__tabList {
     display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.8rem;
+    flex-wrap: wrap;
 }
 
-.watch__nav-item {
+.watch__tab {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
-    padding: 0.8rem 1.2rem;
-    border-radius: $border-radius;
-    cursor: pointer;
-    font-size: 1.5rem;
+    gap: 0.6rem;
+    padding: 0.8rem 1.6rem;
+    border-radius: 2rem;
+    border: 1px solid #e4e6eb;
+    background: #fff;
+    font-size: 1.4rem;
     font-weight: 500;
-    color: $fb-text-primary;
-    transition: background 0.15s, padding 0.25s;
+    color: #1c1e21;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
 
-    &:hover {
-        background: $bg-hover-light;
-    }
+    &:hover { background: #f0f2f5; }
 
     &--active {
-        background: #e7f3ff;
-        color: $fb-blue;
-
-        .watch__nav-icon {
-            background: #cce0ff;
-            color: $fb-blue;
-        }
+        background: #1877f2;
+        border-color: #1877f2;
+        color: #fff;
+        &:hover { background: #166fe5; }
     }
 }
 
-.watch__nav-icon {
-    width: 3.6rem;
-    height: 3.6rem;
-    border-radius: 50%;
-    background: $bg-icon-btn;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.watch__nav-label {
-    white-space: nowrap;
-}
-
-// ── Right Content ─────────────────────────────────────────
-.watch__content {
-    flex: 1;
-    min-width: 0;
-    padding: 2rem 2.4rem;
-    overflow-y: auto;
-}
-
+/* ── Section Title ── */
 .watch__section-title {
     font-size: 2rem;
     font-weight: 700;
-    color: $fb-text-primary;
+    color: #1c1e21;
     margin-bottom: 1.6rem;
 }
 
-// ── Grid ──────────────────────────────────────────────────
+/* ── Grid ── */
 .watch__grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
     gap: 1.6rem;
 
-    &--wide {
-        grid-template-columns: repeat(4, 1fr);
+    @media (max-width: 900px) {
+        grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+        gap: 1.2rem;
     }
 
-    @media (max-width: 1400px) {
-        grid-template-columns: repeat(2, 1fr);
-
-        &--wide {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
-    @media (max-width: 1100px) {
-        grid-template-columns: repeat(2, 1fr);
-        max-width: 70rem;
-        margin: 0 auto;
-
-        &--wide {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (max-width: 575px) {
-        grid-template-columns: repeat(1, 1fr);
-        max-width: 30rem;
-        margin: 0 auto;
-
-        &--wide {
-            grid-template-columns: repeat(1, 1fr);
-        }
+    @media (max-width: 500px) {
+        grid-template-columns: 1fr;
     }
 }
 
-// ── Card ──────────────────────────────────────────────────
+/* ── Card ── */
 .watch__card {
-    background: $fb-white;
-    border-radius: $border-radius;
+    background: #fff;
+    border-radius: 1.2rem;
+    border: 1px solid #e4e6eb;
     overflow: hidden;
     cursor: pointer;
-    transition: box-shadow 0.15s;
+    transition: box-shadow 0.2s, transform 0.2s;
 
     &:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        transform: translateY(-2px);
     }
 
     &:hover .watch__play-icon {
@@ -239,53 +113,34 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0,0,0,0.3);
     color: #fff;
     opacity: 0;
     transition: opacity 0.2s;
 }
 
 .watch__card-info {
-    padding: 1rem 1.2rem 1.2rem;
+    padding: 1.2rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
 }
 
 .watch__card-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: $fb-text-primary;
-    margin-bottom: 0.4rem;
+    color: #1c1e21;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    max-height: 4rem;
 }
 
 .watch__card-channel {
     font-size: 1.3rem;
-    color: $fb-text-secondary;
-    margin-bottom: 0.2rem;
+    color: #65676b;
 }
 
 .watch__card-meta {
-    font-size: 1.3rem;
-    color: $fb-text-secondary;
-}
-
-// ── Home Button — TOP pe, no border ───────────────────────
-.watch__home-btn {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-    padding: 0.8rem 1.2rem;
-    margin-bottom: 0.4rem;
-    cursor: pointer;
-    border-radius: $border-radius;
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: $fb-text-primary;
-    transition: background 0.15s, padding 0.25s;
-
-    &:hover {
-        background: $bg-hover-light;
-    }
+    font-size: 1.2rem;
+    color: #8a8d91;
 }

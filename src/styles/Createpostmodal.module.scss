@@ -1,0 +1,178 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-modal;
+}
+
+.modal {
+  background: $fb-white;
+  border-radius: $border-radius-lg;
+  width: 50rem;
+  max-width: 95vw;
+  box-shadow: $shadow-lg;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+// ── Header ────────────────────────────────────────────────
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.6rem;
+  position: relative;
+  border-bottom: 1px solid $fb-border;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: $fb-text-primary;
+}
+
+.close {
+  position: absolute;
+  right: 1.6rem;
+  background: $bg-icon-btn;
+  border: none;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $fb-text-primary;
+  transition: background $transition-base;
+
+  &:hover {
+    background: $bg-icon-btn-hover;
+  }
+}
+
+// ── User Row ──────────────────────────────────────────────
+.user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.6rem;
+}
+
+.avatar {
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.username {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: $fb-text-primary;
+}
+
+.privacy {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: $bg-icon-btn;
+  border: none;
+  border-radius: $border-radius;
+  padding: 0.3rem 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: $fb-text-primary;
+  cursor: pointer;
+  width: fit-content;
+  transition: background $transition-base;
+
+  &:hover {
+    background: $bg-icon-btn-hover;
+  }
+}
+
+// ── Textarea ──────────────────────────────────────────────
+.textarea {
+  width: 100%;
+  padding: 0 1.6rem 1.2rem;
+  font-size: 1.8rem;
+  color: $fb-text-primary;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  background: transparent;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: $fb-text-secondary;
+  }
+}
+
+// ── Add to Post ───────────────────────────────────────────
+.add-to-post {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 1.6rem 1.2rem;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid $fb-border;
+  border-radius: $border-radius;
+}
+
+.add-label {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: $fb-text-primary;
+}
+
+.add-icons {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.add-btn {
+  background: none;
+  border: none;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background $transition-base;
+
+  &:hover {
+    background: $bg-icon-btn;
+  }
+}
+
+// ── Submit ────────────────────────────────────────────────
+.submit {
+  margin: 0 1.6rem 1.6rem;
+  padding: 1rem;
+  background: $fb-blue;
+  color: $fb-white;
+  border: none;
+  border-radius: $border-radius;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background $transition-base;
+
+  &:hover {
+    background: $fb-blue-hover;
+  }
+}
