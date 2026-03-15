@@ -1,14 +1,49 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import styles from '../styles/Events.module.scss';
 import {
     MdAddBox, MdLocationOn, MdPeople,
     MdGridView, MdTableRows, MdSettings,
+    MdClose,
 } from 'react-icons/md';
 import { EVENT_FILTERS, EVENTS } from '../data/Eventsdata.jsx';
 
+/* ══════════════════════════
+   EVENT DETAIL MODAL  (via Portal so no parent overflow clips it)
+══════════════════════════ */
+const EventModal = ({ event, onClose }) => {
+    const modal = (
+        <div className={styles['modal__backdrop']} onClick={onClose}>
+            <div className={styles['modal__card']} onClick={e => e.stopPropagation()}>
+
+                {/* Close */}
+                <button className={styles['modal__close']} onClick={onClose}>
+                    <MdClose size={20} />
+                </button>
+
+                {/* Image only */}
+                <div className={styles['modal__imgWrap']}>
+                    <img
+                        src={event.img}
+                        alt={event.title}
+                        className={styles['modal__img']}
+                    />
+                </div>
+
+            </div>
+        </div>
+    );
+
+    return createPortal(modal, document.body);
+};
+
+/* ══════════════════════════
+   EVENTS PAGE
+══════════════════════════ */
 export default function Events() {
     const [activeFilter, setActiveFilter] = useState(1);
-    const [viewMode, setViewMode]         = useState('list');
+    const [viewMode, setViewMode] = useState('list');
+    const [selectedEvent, setSelectedEvent] = useState(null);
 
     return (
         <div className={styles['events']}>
@@ -44,30 +79,26 @@ export default function Events() {
                 </div>
 
                 <div className={styles['events__tabList']}>
-                    {EVENT_FILTERS.map((f) => (
+                    {EVENT_FILTERS.map(f => (
                         <button
                             key={f.id}
                             className={`${styles['events__tab']} ${activeFilter === f.id ? styles['events__tab--active'] : ''}`}
                             onClick={() => setActiveFilter(f.id)}
                         >
-                            {f.icon}
-                            {f.label}
-                            {f.badge && (
-                                <span className={styles['events__tab-badge']}>{f.badge}</span>
-                            )}
+                            {f.icon}{f.label}
+                            {f.badge && <span className={styles['events__tab-badge']}>{f.badge}</span>}
                         </button>
                     ))}
                 </div>
             </div>
 
-            {/* ── Content Title ── */}
             <h3 className={styles['events__section-title']}>Upcoming Events</h3>
 
-            {/* ── Grid View ── */}
+            {/* Grid View */}
             {viewMode === 'grid' && (
                 <div className={styles['events__grid']}>
-                    {EVENTS.map((ev) => (
-                        <div key={ev.id} className={styles['events__grid-card']}>
+                    {EVENTS.map(ev => (
+                        <div key={ev.id} className={styles['events__grid-card']} onClick={() => setSelectedEvent(ev)}>
                             <img src={ev.img} alt={ev.title} className={styles['events__grid-img']} />
                             <div className={styles['events__grid-body']}>
                                 <p className={styles['events__card-date']}>{ev.date}</p>
@@ -75,8 +106,8 @@ export default function Events() {
                                 <p className={styles['events__card-location']}><MdLocationOn size={14} /> {ev.location}</p>
                                 <p className={styles['events__card-interested']}><MdPeople size={14} /> {ev.interested} interested</p>
                                 <div className={styles['events__card-actions']}>
-                                    <button className={styles['events__btn-interested']}>Interested</button>
-                                    <button className={styles['events__btn-going']}>Going</button>
+                                    <button className={styles['events__btn-interested']} onClick={e => e.stopPropagation()}>Interested</button>
+                                    <button className={styles['events__btn-going']} onClick={e => e.stopPropagation()}>Going</button>
                                 </div>
                             </div>
                         </div>
@@ -84,22 +115,22 @@ export default function Events() {
                 </div>
             )}
 
-            {/* ── Table View ── */}
+            {/* Table View */}
             {viewMode === 'list' && (
                 <div className={styles['events__table-wrap']}>
                     <table className={styles['events__table']}>
                         <thead>
                             <tr>
-                                <th>Event</th>
-                                <th>Date</th>
-                                <th>Location</th>
-                                <th>Interested</th>
-                                <th>Actions</th>
+                                <th>Event</th><th>Date</th><th>Location</th><th>Interested</th><th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {EVENTS.map((ev, index) => (
-                                <tr key={ev.id} className={index % 2 === 0 ? styles['events__tr-even'] : styles['events__tr-odd']}>
+                                <tr
+                                    key={ev.id}
+                                    className={index % 2 === 0 ? styles['events__tr-even'] : styles['events__tr-odd']}
+                                    onClick={() => setSelectedEvent(ev)}
+                                >
                                     <td>
                                         <div className={styles['events__table-event']}>
                                             <img src={ev.img} alt={ev.title} className={styles['events__table-img']} />
@@ -117,7 +148,7 @@ export default function Events() {
                                             <MdPeople size={14} /> {ev.interested}
                                         </span>
                                     </td>
-                                    <td>
+                                    <td onClick={e => e.stopPropagation()}>
                                         <div className={styles['events__table-actions']}>
                                             <button className={styles['events__btn-interested']}>Interested</button>
                                             <button className={styles['events__btn-going']}>Going</button>
@@ -128,6 +159,11 @@ export default function Events() {
                         </tbody>
                     </table>
                 </div>
+            )}
+
+            {/* Modal via Portal */}
+            {selectedEvent && (
+                <EventModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />
             )}
 
         </div>

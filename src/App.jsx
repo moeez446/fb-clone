@@ -17,6 +17,8 @@ import Toast from './components/Toast';
 import Dashboard from './pages/Dashboard';
 import MyOrders from './pages/MyOrders';
 import ProductDetail from './pages/ProductDetail';
+import Messenger from './pages/Messenger';
+import Notifications from './pages/Notifications';
 import { ProductProvider } from './context/ProductContext';
 
 function FeedPage() {
@@ -27,7 +29,6 @@ function FeedPage() {
   );
 }
 
-// Pages that have their OWN left panel/sidebar — main sidebar hides on these
 const PAGES_WITH_OWN_SIDEBAR = [
   '/login',
   '/register',
@@ -40,7 +41,7 @@ function Layout() {
 
   const isFeed      = location.pathname === '/';
   const hideNavbar  = ['/login', '/register', '/forgot'].includes(location.pathname);
-  const hideSidebar = PAGES_WITH_OWN_SIDEBAR.some(p => location.pathname.startsWith(p));
+  const hideSidebar = PAGES_WITH_OWN_SIDEBAR.some(p => location.pathname.startsWith(p)) || location.pathname === '/messenger';
 
   return (
     <div className="app">
@@ -60,30 +61,32 @@ function Layout() {
 
         <main className="app__main">
           <Routes>
-            <Route path="/"            element={<FeedPage />}    />
-            <Route path="/friends"     element={<Friends />}     />
-            <Route path="/watch"       element={<Watch />}       />
-            <Route path="/marketplace" element={<Marketplace />} />
-            <Route path="/saved"       element={<Saved />}       />
-            <Route path="/events"      element={<Events />}      />
-            <Route path="/login"       element={<Login />}       />
-            <Route path="/products"    element={<Products />}    />
-            <Route path="/checkout"    element={<Checkout />}    />
-            <Route path="/dashboard"   element={<Dashboard />}   />
-            <Route path="/my-orders"    element={<MyOrders />}    />
-            <Route path="/products/:id"  element={<ProductDetail />} />
-            <Route path="/gaming"      element={<ComingSoon />}  />
-            <Route path="/memories"    element={<ComingSoon />}  />
-            <Route path="/groups"      element={<ComingSoon />}  />
-            <Route path="/pages"       element={<ComingSoon />}  />
-            <Route path="/videos"      element={<ComingSoon />}  />
-            <Route path="/feeds"       element={<ComingSoon />}  />
-            <Route path="/fundraisers" element={<ComingSoon />}  />
-            <Route path="/community"   element={<ComingSoon />}  />
-            <Route path="/jobs"        element={<ComingSoon />}  />
-            <Route path="/birthdays"   element={<ComingSoon />}  />
-            <Route path="/explore"     element={<ComingSoon />}  />
-            <Route path="*"            element={<ComingSoon />}  />
+            <Route path="/"               element={<FeedPage />}      />
+            <Route path="/friends"        element={<Friends />}       />
+            <Route path="/watch"          element={<Watch />}         />
+            <Route path="/marketplace"    element={<Marketplace />}   />
+            <Route path="/saved"          element={<Saved />}         />
+            <Route path="/events"         element={<Events />}        />
+            <Route path="/login"          element={<Login />}         />
+            <Route path="/products"       element={<Products />}      />
+            <Route path="/checkout"       element={<Checkout />}      />
+            <Route path="/dashboard"      element={<Dashboard />}     />
+            <Route path="/my-orders"      element={<MyOrders />}      />
+            <Route path="/products/:id"   element={<ProductDetail />} />
+            <Route path="/messenger"      element={<Messenger />}     />
+            <Route path="/notifications"  element={<Notifications />} />
+            <Route path="/gaming"         element={<ComingSoon />}    />
+            <Route path="/memories"       element={<ComingSoon />}    />
+            <Route path="/groups"         element={<ComingSoon />}    />
+            <Route path="/pages"          element={<ComingSoon />}    />
+            <Route path="/videos"         element={<ComingSoon />}    />
+            <Route path="/feeds"          element={<ComingSoon />}    />
+            <Route path="/fundraisers"    element={<ComingSoon />}    />
+            <Route path="/community"      element={<ComingSoon />}    />
+            <Route path="/jobs"           element={<ComingSoon />}    />
+            <Route path="/birthdays"      element={<ComingSoon />}    />
+            <Route path="/explore"        element={<ComingSoon />}    />
+            <Route path="*"               element={<ComingSoon />}    />
           </Routes>
         </main>
 
@@ -104,11 +107,11 @@ function Layout() {
 function App() {
   return (
     <ProductProvider>
-    <CartProvider>
-      <BrowserRouter>
-        <Layout />
-      </BrowserRouter>
-    </CartProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <Layout />
+        </BrowserRouter>
+      </CartProvider>
     </ProductProvider>
   );
 }

@@ -1,225 +1,289 @@
+// ── Base ───────────────────────────────────────────────
 .navbar {
-  height: 5.6rem;
-  background-color: $fb-white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 56px;
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.6rem;
-  position: fixed;
-  width: 100vw;
-  z-index: 1000;
-  box-shadow: 0 0.2rem 0.4rem $shadow-color;
-  box-sizing: border-box;
+  padding: 0 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  gap: 8px;
+}
 
-  &__left {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    min-width: 15rem;
+// ── Left ───────────────────────────────────────────────
+.navbar__left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
 
-    .logo {
-      color: $fb-blue;
-      font-size: 4rem;
-      cursor: pointer;
-    }
+.logo {
+  font-size: 40px;
+  color: #1877f2;
+  display: block;
+}
 
-    .searchWrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: $bg-light-green;
-      padding: 0 1.2rem;
-      border-radius: 999px;
-      height: 4rem;
-      margin-left: 0.8rem;
-      max-width: 24rem;
-      width: 100%;
+.searchWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0f2f5;
+  border-radius: 20px;
+  padding: 8px 12px;
+  width: 240px;
 
-      @media (max-width: 1100px) {
-        width: 4rem;
-        padding: 0;
-      }
+  input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 15px;
+    color: #050505;
+    width: 100%;
 
-      svg {
-        font-size: 2.2rem;
-        flex-shrink: 0;
-        color: $text-primary;
-      }
-
-      input {
-        margin-left: 0.8rem;
-        font-size: 1.5rem;
-        width: 100%;
-
-        @media (max-width: 1100px) {
-          display: none;
-        }
-      }
-    }
-  }
-
-  &__center {
-    display: flex;
-    justify-content: center;
-    flex: 1.5;
-    height: 100%;
-    max-width: 60rem;
-
-    @media (max-width: 768px) {
-      display: none;
-    }
-
-    .option {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex: 1;
-      height: 5.6rem;
-      cursor: pointer;
-      color: $text-secondary;
-      border-bottom: 0.3rem solid transparent;
-      transition: all 0.1s ease-in-out;
-      position: relative;
-
-      // hover background
-      &::before {
-        content: '';
-        position: absolute;
-        inset: 0.6rem 0.4rem;
-        border-radius: 0.8rem;
-        background-color: transparent;
-        transition: background-color 0.1s ease-in-out;
-        z-index: 0;
-      }
-
-      &:hover::before {
-        background-color: $bg-hover-light;
-      }
-
-      svg {
-        font-size: 2.8rem;
-        position: relative;
-        z-index: 1;
-      }
-
-      // ── Tooltip ───────────────────────────────────────────
-      &[data-tooltip]::after {
-        content: attr(data-tooltip);
-        position: absolute;
-        bottom: -3rem;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.75);
-        color: #fff;
-        font-size: 1.2rem;
-        font-weight: 500;
-        padding: 0.4rem 0.8rem;
-        border-radius: 0.6rem;
-        white-space: nowrap;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.15s ease;
-        z-index: 100;
-      }
-
-      &[data-tooltip]:hover::after {
-        opacity: 1;
-      }
-    }
-
-    .active {
-      color: $fb-blue;
-      border-bottom: 0.3rem solid $fb-blue;
-
-      &::before {
-        display: none;
-      }
-    }
-  }
-
-  &__right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex: 1;
-    gap: 0.8rem;
-    min-width: 15rem;
-
-    .iconBtn {
-      background-color: $bg-icon-btn;
-      height: 4rem;
-      width: 4rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      cursor: pointer;
-      flex-shrink: 0;
-      position: relative; // tooltip ke liye
-
-      &:hover {
-        background-color: $bg-icon-btn-hover;
-      }
-
-      svg {
-        font-size: 2.2rem;
-        color: $text-primary;
-      }
-
-      // ── Tooltip ───────────────────────────────────────────
-      &[data-tooltip]::after {
-        content: attr(data-tooltip);
-        position: absolute;
-        bottom: -3.2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.75);
-        color: #fff;
-        font-size: 1.2rem;
-        font-weight: 500;
-        padding: 0.4rem 0.8rem;
-        border-radius: 0.6rem;
-        white-space: nowrap;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.15s ease;
-        z-index: 100;
-      }
-
-      &[data-tooltip]:hover::after {
-        opacity: 1;
-      }
+    &::placeholder {
+      color: #65676b;
     }
   }
 }
-/* Add this to your existing Navbar.module.scss */
 
-.accountWrapper {
-    position: relative;
+// ── Center ─────────────────────────────────────────────
+.navbar__center {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1.5;
+  justify-content: center;
 }
-/* Add this to your existing Navbar.module.scss */
 
-.cartBadge {
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 112px;
+  height: 48px;
+  border-radius: 8px;
+  color: #65676b;
+  font-size: 24px;
+  transition: background 0.15s, color 0.15s;
+  position: relative;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    background: #e4e6eb;
+    color: #050505;
+  }
+
+  &.active {
+    color: #1877f2;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #1877f2;
+      border-radius: 2px 2px 0 0;
+    }
+  }
+
+  &[data-tooltip]::before {
+    content: attr(data-tooltip);
     position: absolute;
-    top: -4px;
-    right: -4px;
-    background: #e53935;
+    bottom: -36px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.75);
     color: #fff;
-    font-size: 10px;
-    font-weight: 700;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 999px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 4px;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
     pointer-events: none;
-    font-family: Helvetica, Arial, sans-serif;
-    border: 2px solid #fff;
+    transition: opacity 0.2s;
+    z-index: 10;
+  }
+
+  &[data-tooltip]:hover::before {
+    opacity: 1;
+  }
 }
 
-/* Make sure iconBtn has position: relative */
+// ── Right ──────────────────────────────────────────────
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
 .iconBtn {
-    position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e4e6eb;
+  color: #050505;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+
+  &:hover {
+    background: #d4d6da;
+  }
+
+  &.iconBtnActive {
+    background: #dce8fd;
+    color: #1877f2;
+  }
+
+  &[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -36px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 10;
+  }
+
+  &[data-tooltip]:hover::before {
+    opacity: 1;
+  }
+}
+
+// ── Badges ─────────────────────────────────────────────
+.cartBadge,
+.notifBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #f02849;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid #fff;
+  pointer-events: none;
+  line-height: 1;
+}
+
+// ── Account Dropdown ───────────────────────────────────
+.accountWrapper {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 280px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+  padding: 12px;
+  animation: dropdownFadeIn 0.15s ease;
+  z-index: 2000;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownUser {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px;
+}
+
+.dropdownAvatar {
+  font-size: 48px;
+  color: #65676b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dropdownInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.dropdownName {
+  font-size: 15px;
+  font-weight: 600;
+  color: #050505;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdownEmail {
+  font-size: 13px;
+  color: #65676b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdownDivider {
+  height: 1px;
+  background: #e4e6eb;
+  margin: 10px 0;
+}
+
+.dropdownLoginBtn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #1877f2;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #166fe5;
+  }
 }

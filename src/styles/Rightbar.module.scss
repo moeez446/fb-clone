@@ -2,7 +2,7 @@
   width: 100%;
   height: 100%;
   padding: 1.6rem 0.8rem 2rem;
-  overflow: hidden;           // outer container no longer scrolls
+  overflow: hidden; // outer container no longer scrolls
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -12,11 +12,11 @@
 .rightbar__section {
   display: flex;
   flex-direction: column;
-  min-height: 0;             // important for flex children to shrink
+  min-height: 0; // important for flex children to shrink
   flex-shrink: 0;
 
   &--contacts {
-    flex: 1;                 // contacts takes all remaining space
+    flex: 1; // contacts takes all remaining space
     min-height: 0;
   }
 }
@@ -25,15 +25,24 @@
 .rightbar__sponsored-scroll {
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 28rem;         // ~3-4 ads visible, rest scrollable
+  max-height: 28rem; // ~3-4 ads visible, rest scrollable
   padding-right: 0.2rem;
 
-  &::-webkit-scrollbar       { width: 6px; }
-  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   &::-webkit-scrollbar-thumb {
     background-color: #d8dadf;
     border-radius: 999px;
-    &:hover { background-color: #c5c6c7; }
+
+    &:hover {
+      background-color: #c5c6c7;
+    }
   }
 }
 
@@ -45,12 +54,21 @@
   min-height: 0;
   padding-right: 0.2rem;
 
-  &::-webkit-scrollbar       { width: 6px; }
-  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   &::-webkit-scrollbar-thumb {
     background-color: #d8dadf;
     border-radius: 999px;
-    &:hover { background-color: #c5c6c7; }
+
+    &:hover {
+      background-color: #c5c6c7;
+    }
   }
 }
 
@@ -58,17 +76,19 @@
 .rightbar__heading {
   font-size: 1.7rem;
   font-weight: 600;
-  color: $fb-text-secondary;
+  color: #65676b;
   padding: 0 0.8rem;
   margin-bottom: 0.8rem;
 
-  @media (max-width: 1300px) { font-size: 1.5rem; }
+  @media (max-width: 1300px) {
+    font-size: 1.5rem;
+  }
 }
 
 // ── Divider ───────────────────────────────────────────────
 .rightbar__divider {
   border: none;
-  border-top: 1px solid $fb-border;
+  border-top: 1px solid #e4e6eb;
   margin: 1.6rem 0.8rem;
   flex-shrink: 0;
 }
@@ -86,10 +106,13 @@
   align-items: flex-start;
   gap: 1.2rem;
   padding: 0.8rem;
-  border-radius: $border-radius;
+  border-radius: 0.8rem;
   cursor: pointer;
   transition: background 0.15s;
-  &:hover { background: $bg-hover-light; }
+
+  &:hover {
+    background: #f2f2f2;
+  }
 
   @media (max-width: 1300px) {
     gap: 0.8rem;
@@ -100,7 +123,7 @@
 .rightbar__ad-img {
   width: 8rem;
   height: 8rem;
-  border-radius: $border-radius;
+  border-radius: 0.8rem;
   object-fit: cover;
   flex-shrink: 0;
 
@@ -121,27 +144,31 @@
 .rightbar__ad-brand {
   font-size: 1.4rem;
   font-weight: 600;
-  color: $fb-text-primary;
+  color: #050505;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
-  @media (max-width: 1300px) { font-size: 1.3rem; }
+  @media (max-width: 1300px) {
+    font-size: 1.3rem;
+  }
 }
 
 .rightbar__ad-tagline {
   font-size: 1.2rem;
-  color: $fb-text-secondary;
+  color: #65676b;
 }
 
 .rightbar__ad-desc {
   font-size: 1.3rem;
-  color: $fb-text-secondary;
+  color: #65676b;
   line-height: 1.4;
   overflow: hidden;
   max-height: 4rem;
 
-  @media (max-width: 1300px) { font-size: 1.2rem; }
+  @media (max-width: 1300px) {
+    font-size: 1.2rem;
+  }
 }
 
 // ── Contacts Top ──────────────────────────────────────────
@@ -166,14 +193,17 @@
   border-radius: 50%;
   border: none;
   background: transparent;
-  color: $fb-text-secondary;
+  color: #65676b;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: background 0.15s;
   flex-shrink: 0;
-  &:hover { background: $bg-hover-light; }
+
+  &:hover {
+    background: #f2f2f2;
+  }
 }
 
 // ── Contact List ──────────────────────────────────────────
@@ -188,10 +218,13 @@
   align-items: center;
   gap: 1.2rem;
   padding: 0.6rem 0.8rem;
-  border-radius: $border-radius;
+  border-radius: 0.8rem;
   cursor: pointer;
   transition: background 0.15s;
-  &:hover { background: $bg-hover-light; }
+
+  &:hover {
+    background: #f2f2f2;
+  }
 
   @media (max-width: 1300px) {
     gap: 0.8rem;
@@ -222,17 +255,19 @@
   height: 1.1rem;
   background-color: #31a24c;
   border-radius: 50%;
-  border: 2px solid $fb-bg;
+  border: 2px solid #f0f2f5;
 }
 
 .rightbar__contact-name {
   font-size: 1.5rem;
   font-weight: 500;
-  color: $fb-text-primary;
+  color: #050505;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
 
-  @media (max-width: 1300px) { font-size: 1.4rem; }
+  @media (max-width: 1300px) {
+    font-size: 1.4rem;
+  }
 }

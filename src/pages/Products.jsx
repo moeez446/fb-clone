@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   MdStar, MdStarHalf, MdStarBorder,
   MdShoppingCart, MdFavoriteBorder, MdFavorite,
@@ -10,7 +10,7 @@ import { useProducts } from "../context/ProductContext";
 import { useCart } from "../context/CartContext";
 import styles from "../styles/Products.module.scss";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 8;
 
 /* ── Cookie helpers ── */
 const setCookie = (name, value, days = 30) => {
@@ -18,7 +18,7 @@ const setCookie = (name, value, days = 30) => {
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
 };
 const getCookie = (name) => {
-  const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+  const match = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
   return match ? decodeURIComponent(match[1]) : null;
 };
 
@@ -38,7 +38,7 @@ const saveLikes = (likesSet) => {
   setCookie("product_likes", arr);
 };
 
-/* ── Star Rating ── */
+/* ── Stars ── */
 const Stars = ({ rating }) => {
   const full = Math.floor(rating);
   const half = rating % 1 >= 0.5;
@@ -54,29 +54,39 @@ const Stars = ({ rating }) => {
 
 /* ── Product Card ── */
 const ProductCard = ({ product, liked, onToggleLike }) => {
-  const [added, setAdded] = useState(false);
-  const { addToCart } = useCart();
   const navigate = useNavigate();
+  const { addToCart } = useCart();
+  const [added, setAdded] = useState(false);
 
-  const handleAdd = () => {
+  const handleAdd = (e) => {
+    e.stopPropagation();
     addToCart(product);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };
 
   return (
-    <div className={styles["product__card"]} onClick={() => navigate(`/products/${product.id}`)} style={{ cursor: "pointer" }}>
+    <div
+      className={styles["product__card"]}
+      onClick={() => navigate(`/products/${product.id}`)}
+    >
       {product.badge && (
         <span className={styles["product__badge"]}>{product.badge}</span>
       )}
-      <button className={styles["product__wishlist"]} onClick={(e) => { e.stopPropagation(); onToggleLike(product.id); }}>
+
+      <button
+        className={styles["product__wishlist"]}
+        onClick={(e) => { e.stopPropagation(); onToggleLike(product.id); }}
+      >
         {liked
           ? <MdFavorite className={styles["product__wishlist--active"]} />
           : <MdFavoriteBorder />}
       </button>
+
       <div className={styles["product__imgWrap"]}>
         <img src={product.image} alt={product.name} className={styles["product__img"]} />
       </div>
+
       <div className={styles["product__info"]}>
         <p className={styles["product__category"]}>{product.category}</p>
         <h3 className={styles["product__name"]}>{product.name}</h3>
@@ -88,7 +98,7 @@ const ProductCard = ({ product, liked, onToggleLike }) => {
           <span className={styles["product__price"]}>Rs {product.price.toLocaleString()}</span>
           <button
             className={`${styles["product__addBtn"]} ${added ? styles["product__addBtn--added"] : ""}`}
-            onClick={(e) => { e.stopPropagation(); handleAdd(); }}
+            onClick={handleAdd}
           >
             <MdShoppingCart size={16} />
             {added ? "Added!" : "Add"}
@@ -99,40 +109,87 @@ const ProductCard = ({ product, liked, onToggleLike }) => {
   );
 };
 
-/* ── Pagination ── */
+/* ── Pagination ─────────────────────────────────────────────────────
+   Always: [sliding 3] … [last 3]
+   The left group slides with current. The right group is always fixed.
+   Dots only appear when there is a real gap between the two groups.
+
+   page 1  → ←  1  2  3  …  30 31 32  →
+   page 2  → ←  2  3  4  …  30 31 32  →
+   page 3  → ←  3  4  5  …  30 31 32  →
+   page 30 → ←  …  29 30 31 32  →   (groups merge, no dots)
+   page 32 → ←  …  30 31 32  →
+   ─────────────────────────────────────────────────────────────────── */
+const buildPageItems = (current, total) => {
+  if (total <= 6) {
+    return Array.from({ length: total }, (_, i) => ({ type: "page", page: i + 1 }));
+  }
+
+  // Left sliding window: current, current+1, current+2 (clamped so it doesn't overlap last-3)
+  const winStart = Math.min(current, total - 5);
+  const winEnd = winStart + 2;
+
+  // Right fixed anchor: always last 3
+  const anchorStart = total - 2;
+  const anchorEnd = total;
+
+  const items = [];
+
+  // Sliding group
+  for (let p = winStart; p <= winEnd; p++) {
+    items.push({ type: "page", page: p });
+  }
+
+  // Dots only if there is a real gap
+  if (anchorStart > winEnd + 1) {
+    items.push({ type: "dots", from: winEnd + 1, to: anchorStart - 1, key: "dM" });
+  } else if (anchorStart === winEnd + 1) {
+    // No gap — groups are adjacent, just continue
+  }
+
+  // Fixed last-3 (skip any already in sliding window)
+  for (let p = anchorStart; p <= anchorEnd; p++) {
+    if (p > winEnd) {
+      items.push({ type: "page", page: p });
+    }
+  }
+
+  return items;
+};
+
+/* Dots — static separator, no hover popup */
+const Dots = () => (
+  <span className={styles["pagination__dots"]}>…</span>
+);
+
 const Pagination = ({ current, total, onChange }) => {
   if (total <= 1) return null;
-
-  const pages = [];
-  for (let i = 1; i <= total; i++) pages.push(i);
-
+  const items = buildPageItems(current, total);
   return (
     <div className={styles["pagination"]}>
       <button
         className={styles["pagination__btn"]}
         onClick={() => onChange(current - 1)}
         disabled={current === 1}
-      >
-        <MdChevronLeft size={20} />
-      </button>
+      ><MdChevronLeft size={20} /></button>
 
-      {pages.map(p => (
-        <button
-          key={p}
-          className={`${styles["pagination__page"]} ${p === current ? styles["pagination__page--active"] : ""}`}
-          onClick={() => onChange(p)}
-        >
-          {p}
-        </button>
-      ))}
+      {items.map(item =>
+        item.type === "dots" ? (
+          <Dots key={item.key} />
+        ) : (
+          <button
+            key={item.page}
+            className={`${styles["pagination__page"]} ${item.page === current ? styles["pagination__page--active"] : ""}`}
+            onClick={() => onChange(item.page)}
+          >{item.page}</button>
+        )
+      )}
 
       <button
         className={styles["pagination__btn"]}
         onClick={() => onChange(current + 1)}
         disabled={current === total}
-      >
-        <MdChevronRight size={20} />
-      </button>
+      ><MdChevronRight size={20} /></button>
     </div>
   );
 };
@@ -140,15 +197,24 @@ const Pagination = ({ current, total, onChange }) => {
 /* ── Products Page ── */
 const Products = () => {
   const { products: PRODUCTS } = useProducts();
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [likes, setLikes] = useState(() => loadLikes());
 
-  useEffect(() => { saveLikes(likes); }, [likes]);
+  const activeCategory = searchParams.get("cat") || "All";
+  const search = searchParams.get("q") || "";
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
 
-  // Reset to page 1 when filter/search changes
-  useEffect(() => { setCurrentPage(1); }, [activeCategory, search]);
+  const setActiveCategory = (cat) => {
+    setSearchParams(p => { p.set("cat", cat); p.set("page", "1"); p.delete("q"); return p; });
+  };
+  const setSearch = (val) => {
+    setSearchParams(p => { if (val) p.set("q", val); else p.delete("q"); p.set("page", "1"); return p; });
+  };
+  const setCurrentPage = (num) => {
+    setSearchParams(p => { p.set("page", String(num)); return p; });
+  };
+
+  useEffect(() => { saveLikes(likes); }, [likes]);
 
   const toggleLike = (id) => {
     setLikes(prev => {
@@ -158,7 +224,7 @@ const Products = () => {
     });
   };
 
-  const filtered = PRODUCTS.filter((p) => {
+  const filtered = PRODUCTS.filter(p => {
     const matchCat = activeCategory === "All" || p.category === activeCategory;
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
     return matchCat && matchSearch;
@@ -176,7 +242,6 @@ const Products = () => {
   return (
     <div className={styles["products"]}>
 
-      {/* ── Header ── */}
       <div className={styles["products__header"]}>
         <h1 className={styles["products__title"]}>Products</h1>
         <input
@@ -184,34 +249,29 @@ const Products = () => {
           type="text"
           placeholder="Search products..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={e => setSearch(e.target.value)}
         />
       </div>
 
-      {/* ── Category Filter ── */}
       <div className={styles["products__categories"]}>
-        {CATEGORIES.map((cat) => (
+        {CATEGORIES.map(cat => (
           <button
             key={cat}
             className={`${styles["products__catBtn"]} ${activeCategory === cat ? styles["products__catBtn--active"] : ""}`}
             onClick={() => setActiveCategory(cat)}
-          >
-            {cat}
-          </button>
+          >{cat}</button>
         ))}
       </div>
 
-      {/* ── Results count ── */}
       {filtered.length > 0 && (
         <p className={styles["products__count"]}>
           Showing {startIdx + 1}–{Math.min(startIdx + ITEMS_PER_PAGE, filtered.length)} of {filtered.length} products
         </p>
       )}
 
-      {/* ── Grid ── */}
       {paginated.length > 0 ? (
         <div className={styles["products__grid"]}>
-          {paginated.map((product) => (
+          {paginated.map(product => (
             <ProductCard
               key={product.id}
               product={product}
@@ -226,12 +286,7 @@ const Products = () => {
         </div>
       )}
 
-      {/* ── Pagination ── */}
-      <Pagination
-        current={currentPage}
-        total={totalPages}
-        onChange={handlePageChange}
-      />
+      <Pagination current={currentPage} total={totalPages} onChange={handlePageChange} />
 
     </div>
   );

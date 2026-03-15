@@ -1,0 +1,259 @@
+/* ── Popup container ── */
+.popup {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 36rem;
+    max-height: 80vh;
+    background: #fff;
+    border-radius: 1.2rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 2000;
+    animation: popupIn 0.15s ease;
+    overflow: hidden;
+
+    @media (max-width: 480px) {
+        width: 100vw;
+        right: -1rem;
+        border-radius: 0 0 1.2rem 1.2rem;
+    }
+}
+
+@keyframes popupIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Header ── */
+.popup__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.6rem 1.6rem 0.8rem;
+    flex-shrink: 0;
+}
+
+.popup__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #050505;
+}
+
+.popup__settings {
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 50%;
+    border: none;
+    background: #e4e6eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #050505;
+    transition: background 0.15s;
+
+    &:hover {
+        background: #d8dadf;
+    }
+}
+
+/* ── Tabs ── */
+.popup__tabs {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0 1.2rem 0.8rem;
+    flex-shrink: 0;
+}
+
+.popup__tab {
+    padding: 0.6rem 1.2rem;
+    border-radius: 2rem;
+    border: none;
+    background: #e4e6eb;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #050505;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: inherit;
+
+    &:hover {
+        background: #d8dadf;
+    }
+
+    &--active {
+        background: #dce8fd;
+        color: #1877f2;
+    }
+}
+
+/* ── Scrollable list ── */
+.popup__list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 0.8rem;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #d8dadf;
+        border-radius: 4px;
+    }
+}
+
+.popup__sectionLabel {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #050505;
+    padding: 0.8rem 0.8rem 0.4rem;
+}
+
+/* ── Footer ── */
+.popup__footer {
+    padding: 0.8rem 1.6rem 1.2rem;
+    flex-shrink: 0;
+    border-top: 1px solid #e4e6eb;
+}
+
+.popup__seeAll {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 0.8rem;
+    background: #e4e6eb;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #050505;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+
+    &:hover {
+        background: #d8dadf;
+    }
+}
+
+/* ── Notification item ── */
+.notif {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.8rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+
+    &:hover {
+        background: #f0f2f5;
+    }
+
+    &--unread {
+        background: #eef3fb;
+
+        &:hover {
+            background: #dce8fd;
+        }
+    }
+}
+
+/* ── Avatar ── */
+.notif__avatarWrap {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.notif__avatar {
+    width: 5.6rem;
+    height: 5.6rem;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.notif__avatarFallback {
+    width: 5.6rem;
+    height: 5.6rem;
+    border-radius: 50%;
+    background: #e4e6eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #65676b;
+}
+
+.notif__typeIcon {
+    position: absolute;
+    bottom: -2px;
+    right: -4px;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+/* ── Body ── */
+.notif__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.notif__text {
+    font-size: 1.4rem;
+    color: #050505;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    & strong {
+        font-weight: 600;
+    }
+}
+
+.notif__time {
+    font-size: 1.25rem;
+    color: #65676b;
+    margin-top: 0.3rem;
+    display: block;
+
+    &--unread {
+        color: #1877f2;
+        font-weight: 600;
+    }
+}
+
+/* ── Thumbnail ── */
+.notif__thumb {
+    width: 5.2rem;
+    height: 5.2rem;
+    border-radius: 0.8rem;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* ── Unread dot ── */
+.notif__dot {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    background: #1877f2;
+    flex-shrink: 0;
+}

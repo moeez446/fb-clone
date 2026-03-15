@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
     MdDashboard, MdShoppingBag, MdInventory2,
     MdEdit, MdDelete, MdAdd, MdClose, MdSave,
@@ -58,27 +59,84 @@ const Empty = ({ icon, text }) => (
 );
 
 /* ─────────────────────────────────
-   PAGINATION  — centered
+   PAGINATION  — sliding window
+   Always: [sliding 3] … [last 3]
+   page 1  → ← 1 2 3 … 30 31 32 →
+   page 2  → ← 2 3 4 … 30 31 32 →
+   page 15 → ← 15 16 17 … 30 31 32 →
+   page 30 → ← 29 30 31 32 →  (merged)
 ───────────────────────────────── */
+const buildPageItems = (current, total) => {
+    if (total <= 6) {
+        return Array.from({ length: total }, (_, i) => ({ type: 'page', page: i + 1 }));
+    }
+
+    // Left sliding window — starts at current, clamped away from anchor
+    const winStart    = Math.min(current, total - 5);
+    const winEnd      = winStart + 2;
+    const anchorStart = total - 2;
+    const anchorEnd   = total;
+
+    const items = [];
+
+    // Sliding group (3 pages)
+    for (let p = winStart; p <= winEnd; p++) {
+        items.push({ type: 'page', page: p });
+    }
+
+    // Static dots separator — only when there is a real gap
+    if (anchorStart > winEnd + 1) {
+        items.push({ type: 'dots', key: 'dM' });
+    }
+
+    // Fixed last-3 (skip pages already shown in sliding window)
+    for (let p = anchorStart; p <= anchorEnd; p++) {
+        if (p > winEnd) {
+            items.push({ type: 'page', page: p });
+        }
+    }
+
+    return items;
+};
+
 const Pagination = ({ total, page, onPage }) => {
     const totalPages = Math.ceil(total / PAGE_SIZE);
     if (totalPages <= 1) return null;
-    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+    const items = buildPageItems(page, totalPages);
+
     return (
         <div className={styles.pagination}>
-            <button className={styles.pageBtn} onClick={() => onPage(page - 1)} disabled={page === 1}>
+            <button
+                className={styles.pageBtn}
+                onClick={() => onPage(page - 1)}
+                disabled={page === 1}
+            >
                 <MdChevronLeft size={20} />
             </button>
-            <div className={styles.pageNumbers}>
-                {pages.map(p => (
-                    <button key={p} className={`${styles.pageNum} ${p === page ? styles.pageNumActive : ''}`} onClick={() => onPage(p)}>
-                        {p}
+
+            {items.map((item, idx) =>
+                item.type === 'dots' ? (
+                    <span key={item.key} className={styles.pageDots}>…</span>
+                ) : (
+                    <button
+                        key={item.page}
+                        className={`${styles.pageNum} ${item.page === page ? styles.pageNumActive : ''}`}
+                        onClick={() => onPage(item.page)}
+                    >
+                        {item.page}
                     </button>
-                ))}
-            </div>
-            <button className={styles.pageBtn} onClick={() => onPage(page + 1)} disabled={page === totalPages}>
+                )
+            )}
+
+            <button
+                className={styles.pageBtn}
+                onClick={() => onPage(page + 1)}
+                disabled={page === totalPages}
+            >
                 <MdChevronRight size={20} />
             </button>
+
             <span className={styles.pageInfo}>
                 {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, total)} of {total}
             </span>
@@ -87,8 +145,7 @@ const Pagination = ({ total, page, onPage }) => {
 };
 
 /* ─────────────────────────────────
-   DASHBOARD STATS  (top of page)
-   Orders · Revenue · Products · Pending · Shipped · Delivered · Cancelled
+   DASHBOARD STATS
 ───────────────────────────────── */
 const DashboardStats = ({ orders, products }) => {
     const counts = {
@@ -100,13 +157,13 @@ const DashboardStats = ({ orders, products }) => {
     const revenue = orders.filter(o => o.status !== 'Cancelled').reduce((s, o) => s + o.total, 0);
 
     const cards = [
-        { label: 'Total Orders',   value: orders.length,                      icon: <MdShoppingBag size={22} />,    cls: styles.scTotal     },
-        { label: 'Revenue',        value: `Rs ${revenue.toLocaleString()}`,    icon: <MdTrendingUp size={22} />,     cls: styles.scRevenue   },
-        { label: 'Total Products', value: products.length,                     icon: <MdInventory2 size={22} />,     cls: styles.scProducts  },
-        { label: 'Pending',        value: counts.Pending,                      icon: <MdPending size={22} />,        cls: styles.scPending   },
-        { label: 'Shipped',        value: counts.Shipped,                      icon: <MdLocalShipping size={22} />,  cls: styles.scShipped   },
-        { label: 'Delivered',      value: counts.Delivered,                    icon: <MdCheckCircle size={22} />,    cls: styles.scDelivered },
-        { label: 'Cancelled',      value: counts.Cancelled,                    icon: <MdCancel size={22} />,         cls: styles.scCancelled },
+        { label: 'Total Orders',   value: orders.length,                   icon: <MdShoppingBag size={22} />,   cls: styles.scTotal     },
+        { label: 'Revenue',        value: `Rs ${revenue.toLocaleString()}`, icon: <MdTrendingUp size={22} />,    cls: styles.scRevenue   },
+        { label: 'Total Products', value: products.length,                  icon: <MdInventory2 size={22} />,    cls: styles.scProducts  },
+        { label: 'Pending',        value: counts.Pending,                   icon: <MdPending size={22} />,       cls: styles.scPending   },
+        { label: 'Shipped',        value: counts.Shipped,                   icon: <MdLocalShipping size={22} />, cls: styles.scShipped   },
+        { label: 'Delivered',      value: counts.Delivered,                 icon: <MdCheckCircle size={22} />,   cls: styles.scDelivered },
+        { label: 'Cancelled',      value: counts.Cancelled,                 icon: <MdCancel size={22} />,        cls: styles.scCancelled },
     ];
 
     return (
@@ -168,30 +225,38 @@ const CancelModal = ({ order, onConfirm, onClose }) => {
 ───────────────────────────────── */
 const OrdersTab = ({ orders }) => {
     const { updateOrderStatus, cancelOrder, deleteOrder } = useCart();
-    const [expandedId, setExpandedId] = useState(null);
-    const [filter, setFilter]         = useState('All');
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [expandedId, setExpandedId]     = useState(null);
     const [cancelTarget, setCancelTarget] = useState(null);
     const [deleteTarget, setDeleteTarget] = useState(null);
-    const [page, setPage]             = useState(1);
+
+    const filter  = searchParams.get('filter') || 'All';
+    const page    = parseInt(searchParams.get('opage') || '1', 10);
+
+    const setFilter = (f) => setSearchParams(p => {
+        p.set('tab', 'orders');
+        if (f === 'All') p.delete('filter'); else p.set('filter', f);
+        p.set('opage', '1');
+        return p;
+    });
+    const setPage = (n) => setSearchParams(p => { p.set('opage', String(n)); return p; });
 
     const filtered  = filter === 'All' ? orders : orders.filter(o => o.status === filter);
     const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
     const toggle    = id => setExpandedId(prev => prev === id ? null : id);
-    const handleFilter = f => { setFilter(f); setPage(1); };
 
     if (orders.length === 0)
         return <Empty icon={<MdShoppingBag size={48} />} text="No orders yet. Complete a checkout to see orders here." />;
 
     return (
         <div>
-            {/* Filter Row */}
             <div className={styles.filterRow}>
                 <MdFilterList size={18} className={styles.filterIcon} />
                 {ORDER_FILTERS.map(f => (
                     <button
                         key={f}
                         className={`${styles.filterBtn} ${filter === f ? styles.filterBtnActive : ''} ${f !== 'All' ? styles[`filter_${f}`] : ''}`}
-                        onClick={() => handleFilter(f)}
+                        onClick={() => setFilter(f)}
                     >
                         {f !== 'All' && STATUS_CONFIG[f]?.icon}
                         {f}
@@ -240,13 +305,12 @@ const OrdersTab = ({ orders }) => {
                 <CancelModal order={cancelTarget} onConfirm={cancelOrder} onClose={() => setCancelTarget(null)} />
             )}
 
-            {/* ── Delete Order Confirm ── */}
             {deleteTarget && (
                 <div className={styles.overlay} onClick={() => setDeleteTarget(null)}>
                     <div className={styles.confirmModal} onClick={e => e.stopPropagation()}>
                         <MdDelete size={40} className={styles.confirmIcon} />
                         <h3>Delete Order?</h3>
-                        <p>Order <strong style={{ color: '#1877f2', fontFamily: 'monospace' }}>{deleteTarget.id}</strong> will be permanently removed and cannot be recovered.</p>
+                        <p>Order <strong style={{ color: '#1877f2', fontFamily: 'monospace' }}>{deleteTarget.id}</strong> will be permanently removed.</p>
                         <div className={styles.confirmActions}>
                             <button className={styles.cancelBtn} onClick={() => setDeleteTarget(null)}>Keep It</button>
                             <button className={styles.confirmDeleteBtn} onClick={() => { deleteOrder(deleteTarget.id); setDeleteTarget(null); }}>
@@ -375,23 +439,22 @@ const OrderRow = ({ order, index, expanded, onToggle, onStatusChange, onCancel, 
 );
 
 /* ─────────────────────────────────
-   PRODUCT MODAL  — fixed height
+   PRODUCT MODAL
 ───────────────────────────────── */
-/* Required fields and which section they live in */
 const REQUIRED_FIELDS = [
-    { key: 'name',        label: 'Product Name',  section: 'basic'   },
-    { key: 'price',       label: 'Price',         section: 'basic'   },
-    { key: 'brand',       label: 'Brand',         section: 'basic'   },
-    { key: 'image',       label: 'Main Image URL', section: 'media'  },
-    { key: 'description', label: 'Description',   section: 'details' },
-    { key: 'stock',       label: 'Stock Quantity', section: 'stock'  },
+    { key: 'name',        label: 'Product Name',   section: 'basic'   },
+    { key: 'price',       label: 'Price',          section: 'basic'   },
+    { key: 'brand',       label: 'Brand',          section: 'basic'   },
+    { key: 'image',       label: 'Main Image URL', section: 'media'   },
+    { key: 'description', label: 'Description',    section: 'details' },
+    { key: 'stock',       label: 'Stock Quantity', section: 'stock'   },
 ];
 
 const ProductModal = ({ product, onSave, onClose }) => {
     const isEdit = Boolean(product);
     const [activeSection, setActiveSection] = useState('basic');
-    const [errors, setErrors] = useState({});
-    const [showBanner, setShowBanner] = useState(false);
+    const [errors, setErrors]               = useState({});
+    const [showBanner, setShowBanner]       = useState(false);
 
     const [form, setForm] = useState({
         name:        product?.name        || '',
@@ -411,7 +474,6 @@ const ProductModal = ({ product, onSave, onClose }) => {
     const handle = e => {
         const { name, value } = e.target;
         setForm(f => ({ ...f, [name]: value }));
-        // clear error for this field as user types
         if (errors[name]) setErrors(prev => { const n = { ...prev }; delete n[name]; return n; });
     };
 
@@ -421,7 +483,6 @@ const ProductModal = ({ product, onSave, onClose }) => {
             const val = String(form[key] ?? '').trim();
             if (!val || val === '0') newErrors[key] = `${label} is required`;
         });
-        // price must be > 0
         if (form.price && Number(form.price) <= 0) newErrors.price = 'Price must be greater than 0';
         return newErrors;
     };
@@ -432,7 +493,6 @@ const ProductModal = ({ product, onSave, onClose }) => {
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             setShowBanner(true);
-            // jump to the first section that has an error
             const firstErrSection = REQUIRED_FIELDS.find(f => newErrors[f.key])?.section;
             if (firstErrSection) setActiveSection(firstErrSection);
             return;
@@ -447,19 +507,17 @@ const ProductModal = ({ product, onSave, onClose }) => {
     };
 
     const SECTIONS = [
-        { id: 'basic',   label: 'Basic',   icon: <MdStorefront size={15} />, hasError: ['name','price','brand'].some(k => errors[k])          },
-        { id: 'media',   label: 'Media',   icon: <MdPhoto size={15} />,      hasError: ['image'].some(k => errors[k])                          },
-        { id: 'details', label: 'Details', icon: <MdDescription size={15} />,hasError: ['description'].some(k => errors[k])                    },
-        { id: 'stock',   label: 'Stock',   icon: <MdInventory size={15} />,  hasError: ['stock'].some(k => errors[k])                          },
+        { id: 'basic',   label: 'Basic',   icon: <MdStorefront size={15} />, hasError: ['name','price','brand'].some(k => errors[k])        },
+        { id: 'media',   label: 'Media',   icon: <MdPhoto size={15} />,      hasError: ['image'].some(k => errors[k])                        },
+        { id: 'details', label: 'Details', icon: <MdDescription size={15} />,hasError: ['description'].some(k => errors[k])                  },
+        { id: 'stock',   label: 'Stock',   icon: <MdInventory size={15} />,  hasError: ['stock'].some(k => errors[k])                        },
     ];
     const currentIdx = SECTIONS.findIndex(s => s.id === activeSection);
 
     return (
         <div className={styles.overlay}>
-            {/* productModalNew has fixed height via CSS */}
             <div className={styles.productModalNew}>
 
-                {/* ── FIXED: Header ── */}
                 <div className={styles.productModalHeader}>
                     <div className={styles.productModalHeaderLeft}>
                         <div className={styles.productModalHeaderIcon}>
@@ -473,7 +531,6 @@ const ProductModal = ({ product, onSave, onClose }) => {
                     <button type="button" className={styles.modalClose} onClick={onClose}><MdClose size={22} /></button>
                 </div>
 
-                {/* ── FIXED: Step Nav ── */}
                 <div className={styles.sectionNav}>
                     {SECTIONS.map((s, idx) => (
                         <button key={s.id} type="button"
@@ -488,12 +545,9 @@ const ProductModal = ({ product, onSave, onClose }) => {
                     ))}
                 </div>
 
-                {/* ── SCROLLABLE: Body + FIXED: Footer inside form ── */}
                 <form onSubmit={handleSubmit} className={styles.productModalForm}>
-
                     <div className={styles.productModalBody}>
 
-                        {/* ── Error banner ── */}
                         {showBanner && Object.keys(errors).length > 0 && (
                             <div className={styles.errorBanner}>
                                 <MdWarning size={18} />
@@ -509,7 +563,6 @@ const ProductModal = ({ product, onSave, onClose }) => {
                             </div>
                         )}
 
-                        {/* ── BASIC ── */}
                         {activeSection === 'basic' && (
                             <div className={styles.sectionContent}>
                                 <div className={styles.sectionTitle}><MdStorefront size={17} /> Basic Information</div>
@@ -551,7 +604,6 @@ const ProductModal = ({ product, onSave, onClose }) => {
                             </div>
                         )}
 
-                        {/* ── MEDIA ── */}
                         {activeSection === 'media' && (
                             <div className={styles.sectionContent}>
                                 <div className={styles.sectionTitle}><MdPhoto size={17} /> Product Media</div>
@@ -580,7 +632,6 @@ const ProductModal = ({ product, onSave, onClose }) => {
                             </div>
                         )}
 
-                        {/* ── DETAILS ── */}
                         {activeSection === 'details' && (
                             <div className={styles.sectionContent}>
                                 <div className={styles.sectionTitle}><MdDescription size={17} /> Product Details</div>
@@ -622,7 +673,6 @@ const ProductModal = ({ product, onSave, onClose }) => {
                             </div>
                         )}
 
-                        {/* ── STOCK ── */}
                         {activeSection === 'stock' && (
                             <div className={styles.sectionContent}>
                                 <div className={styles.sectionTitle}><MdInventory size={17} /> Stock & Summary</div>
@@ -646,7 +696,7 @@ const ProductModal = ({ product, onSave, onClose }) => {
                                     <div className={styles.summaryTitle}>Product Summary</div>
                                     {form.image && <img src={form.image} alt="" className={styles.summaryImg} onError={e => e.target.style.display = 'none'} />}
                                     <div className={styles.summaryRows}>
-                                        <div className={styles.summaryRow}><span>Name</span><strong>{form.name || <span className={styles.missingVal}>—  Missing</span>}</strong></div>
+                                        <div className={styles.summaryRow}><span>Name</span><strong>{form.name || <span className={styles.missingVal}>— Missing</span>}</strong></div>
                                         <div className={styles.summaryRow}><span>Price</span><strong>{form.price ? `Rs ${Number(form.price).toLocaleString()}` : <span className={styles.missingVal}>— Missing</span>}</strong></div>
                                         <div className={styles.summaryRow}><span>Category</span><strong>{form.category || '—'}</strong></div>
                                         <div className={styles.summaryRow}><span>Brand</span><strong>{form.brand || <span className={styles.missingVal}>— Missing</span>}</strong></div>
@@ -656,9 +706,8 @@ const ProductModal = ({ product, onSave, onClose }) => {
                                 </div>
                             </div>
                         )}
-                    </div>{/* end productModalBody */}
+                    </div>
 
-                    {/* ── FIXED: Footer ── */}
                     <div className={styles.productModalFooter}>
                         <div className={styles.footerNav}>
                             {currentIdx > 0 && (
@@ -693,11 +742,15 @@ const ProductModal = ({ product, onSave, onClose }) => {
 ───────────────────────────────── */
 const ProductsTab = () => {
     const { products, addProduct, updateProduct, deleteProduct } = useProducts();
-    const [modal, setModal]       = useState(null);
-    const [deleteId, setDeleteId] = useState(null);
-    const [page, setPage]         = useState(1);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [modal, setModal]               = useState(null);
+    const [deleteId, setDeleteId]         = useState(null);
+
+    const page    = parseInt(searchParams.get('ppage') || '1', 10);
+    const setPage = (n) => setSearchParams(p => { p.set('ppage', String(n)); return p; });
 
     const paginated = products.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
     const handleSave = form => {
         if (modal === 'add') addProduct(form);
         else updateProduct(modal.id, form);
@@ -771,13 +824,21 @@ const ProductsTab = () => {
    DASHBOARD PAGE
 ───────────────────────────────── */
 const Dashboard = () => {
-    const [activeTab, setActiveTab] = useState('orders');
+    const [searchParams, setSearchParams] = useSearchParams();
     const { orders }   = useCart();
     const { products } = useProducts();
 
+    const activeTab    = searchParams.get('tab') || 'orders';
+    const setActiveTab = (tab) => setSearchParams(p => {
+        p.set('tab', tab);
+        p.delete('filter');
+        p.delete('opage');
+        p.delete('ppage');
+        return p;
+    });
+
     return (
         <div className={styles.page}>
-
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
                     <MdDashboard size={28} className={styles.headerIcon} />
@@ -785,10 +846,8 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            {/* ── 7-card status strip (orders + products + all statuses) ── */}
             <DashboardStats orders={orders} products={products} />
 
-            {/* Tabs */}
             <div className={styles.tabs}>
                 <button className={`${styles.tab} ${activeTab === 'orders' ? styles.tabActive : ''}`} onClick={() => setActiveTab('orders')}>
                     <MdShoppingBag size={18} /> Orders
@@ -804,7 +863,6 @@ const Dashboard = () => {
                 {activeTab === 'orders'   && <OrdersTab orders={orders} />}
                 {activeTab === 'products' && <ProductsTab />}
             </div>
-
         </div>
     );
 };

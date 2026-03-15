@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 
 const CartContext = createContext();
 
-const CART_KEY = 'fb_cart_items';
+const CART_KEY   = 'fb_cart_items';
 const ORDERS_KEY = 'fb_orders';
 
 const loadCart = () => {
@@ -21,17 +21,17 @@ const loadOrders = () => {
 
 export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState(() => loadCart());
-    const [orders, setOrders] = useState(() => loadOrders());
-    const [toasts, setToasts] = useState([]);
+    const [orders, setOrders]       = useState(() => loadOrders());
+    const [toasts, setToasts]       = useState([]);
 
     /* ── Persist cart ── */
     useEffect(() => {
-        try { localStorage.setItem(CART_KEY, JSON.stringify(cartItems)); } catch { }
+        try { localStorage.setItem(CART_KEY, JSON.stringify(cartItems)); } catch {}
     }, [cartItems]);
 
     /* ── Persist orders ── */
     useEffect(() => {
-        try { localStorage.setItem(ORDERS_KEY, JSON.stringify(orders)); } catch { }
+        try { localStorage.setItem(ORDERS_KEY, JSON.stringify(orders)); } catch {}
     }, [orders]);
 
     /* ── Toast helpers ── */
@@ -69,7 +69,7 @@ export const CartProvider = ({ children }) => {
         );
     }, []);
 
-    /* ── Place order ── */
+    /* ── Place order — saves to orders history ── */
     const placeOrder = useCallback((formData, cartItems, total) => {
         const order = {
             id: `ORD-${Date.now()}`,
@@ -99,17 +99,14 @@ export const CartProvider = ({ children }) => {
         ));
     }, []);
 
-    const cancelOrder = useCallback((orderId, reason) => {
-        setOrders(prev => prev.map(o =>
-            o.id === orderId
-                ? { ...o, status: 'Cancelled', cancelReason: reason, cancelledAt: new Date().toLocaleString('en-PK') }
-                : o
-        ));
-    }, []);
-
-    /* ── Delete order permanently ── */
     const deleteOrder = useCallback((orderId) => {
         setOrders(prev => prev.filter(o => o.id !== orderId));
+    }, []);
+
+    const cancelOrder = useCallback((orderId, reason) => {
+        setOrders(prev => prev.map(o =>
+            o.id === orderId ? { ...o, status: 'Cancelled', cancelReason: reason, cancelledAt: new Date().toLocaleString('en-PK') } : o
+        ));
     }, []);
 
     const totalCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
